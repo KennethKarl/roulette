@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>세이프닥 복지 룰렛 이벤트 — 매일 한 번, 건강검진·복지 혜택 뽑기</title>
+<meta name="description" content="하루 한 번 룰렛을 돌리고 건강검진 할인 쿠폰과 복지몰 혜택을 받아가세요. 세이프닥 회원이라면 누구나 참여 가능." />
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+<style>
+  :root{
+    --blue:#1B59FA; --blue-dark:#0F3FCC; --blue-soft:#EEF3FF; --blue-100:#D7E2FF;
+    --ink:#000F2C; --ink-soft:#2B3858; --mute:#6A7896; --faint:#A6B0BE;
+    --line:#E5E7EC; --edge:#CCD3DC; --mist:#F7F8FA; --cloud:#F2F3F6;
+    --aqua:#28E8FF; --lime:#CDFF1C; --star:#E8A317; --success:#1E8E5C; --danger:#C8321F;
+    --navy:#000F2C; --grad:linear-gradient(118deg,#000D96 0%,#0A2BD0 46%,#1B59FA 100%);
+    --shadow-card:0 1px 2px rgba(0,15,44,.04),0 1px 3px rgba(15,21,32,.06);
+    --shadow-pop:0 20px 60px rgba(10,37,112,.24);
+    --radius:8px;
+    --font:'Pretendard Variable','Noto Sans','Noto Sans KR',Helvetica,Arial,-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:var(--font); color:var(--ink); background:var(--cloud);
+    -webkit-font-smoothing:antialiased; line-height:1.62; letter-spacing:0;
+    word-break:keep-all; overflow-wrap:break-word;
+  }
+  .shell{max-width:440px; margin:0 auto; background:#fff; min-height:100vh; position:relative; overflow:hidden}
+
+  /* ── Top brand bar ─────────────────────────────── */
+  .topbar{
+    display:flex; align-items:center; gap:8px; padding:14px 18px;
+    position:sticky; top:0; z-index:30; background:rgba(255,255,255,.86);
+    backdrop-filter:saturate(180%) blur(12px); border-bottom:1px solid var(--line);
+  }
+  .logo{display:flex; align-items:center; gap:7px; font-weight:800; font-size:16px; letter-spacing:-.02em}
+  .logo .mark{
+    width:22px; height:22px; border-radius:7px; background:var(--grad);
+    display:grid; place-items:center; color:#fff; font-size:12px; font-weight:900;
+    box-shadow:0 2px 8px rgba(27,89,250,.4);
+  }
+  .logo .brand{color:var(--ink)}
+  .logo .brand b{color:var(--blue)}
+  .topbar .badge{
+    margin-left:auto; font-size:11px; font-weight:700; color:var(--blue);
+    background:var(--blue-soft); padding:5px 10px; border-radius:999px;
+  }
+
+  /* ── Hero ─────────────────────────────── */
+  .hero{
+    background:var(--grad); color:#fff; padding:30px 22px 26px; text-align:center;
+    position:relative; overflow:hidden;
+  }
+  .hero::before, .hero::after{content:""; position:absolute; border-radius:50%; filter:blur(2px); opacity:.5}
+  .hero::before{width:180px;height:180px; background:radial-gradient(circle,rgba(40,232,255,.55),transparent 70%); top:-70px; right:-50px}
+  .hero::after{width:200px;height:200px; background:radial-gradient(circle,rgba(205,255,28,.30),transparent 70%); bottom:-90px; left:-60px}
+  .hero-inner{position:relative; z-index:1}
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:700;
+    background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.28);
+    color:#fff; padding:6px 13px; border-radius:999px; margin-bottom:14px;
+  }
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--lime);box-shadow:0 0 8px var(--lime)}
+  .hero h1{margin:0 0 8px; font-size:26px; line-height:1.28; font-weight:800; letter-spacing:-.03em}
+  .hero h1 .hl{color:var(--lime)}
+  .hero p{margin:0 auto; max-width:300px; font-size:13.5px; color:rgba(255,255,255,.82); font-weight:500}
+
+  /* ── Countdown ─────────────────────────────── */
+  .countdown{
+    display:flex; justify-content:center; gap:8px; margin-top:18px;
+  }
+  .cd-cell{
+    background:rgba(0,15,44,.28); border:1px solid rgba(255,255,255,.16);
+    border-radius:12px; padding:8px 4px; min-width:58px;
+  }
+  .cd-num{font-size:24px; font-weight:800; line-height:1; letter-spacing:-.02em; font-variant-numeric:tabular-nums}
+  .cd-lab{font-size:10.5px; color:rgba(255,255,255,.7); margin-top:5px; font-weight:600; letter-spacing:.04em}
+  .cd-note{margin-top:12px; font-size:11.5px; color:rgba(255,255,255,.66)}
+
+  /* ── Wheel section ─────────────────────────────── */
+  .wheel-sec{padding:26px 22px 8px; text-align:center; background:radial-gradient(120% 90% at 50% 0%,#fff 0%,var(--mist) 100%)}
+  .wheel-wrap{position:relative; width:290px; height:290px; margin:6px auto 0}
+  .wheel-ring{
+    position:absolute; inset:-12px; border-radius:50%;
+    background:conic-gradient(from 0deg,#0A2BD0,#1B59FA,#28E8FF,#1B59FA,#0A2BD0);
+    filter:blur(1px); opacity:.9; box-shadow:var(--shadow-pop);
+  }
+  .wheel-ring::after{
+    content:""; position:absolute; inset:8px; border-radius:50%; background:#fff;
+  }
+  .wheel{
+    position:absolute; inset:0; border-radius:50%;
+    transition:transform 5s cubic-bezier(.13,.86,.18,1);
+    box-shadow:inset 0 0 0 6px #fff, inset 0 0 0 7px rgba(0,15,44,.06);
+    z-index:2;
+  }
+  .wheel svg{width:100%; height:100%; display:block}
+  .wheel-seg-label{font-size:9.5px; font-weight:800; letter-spacing:-.02em}
+  .hub{
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    width:66px; height:66px; border-radius:50%; z-index:5;
+    background:var(--grad); color:#fff; border:4px solid #fff;
+    box-shadow:0 6px 18px rgba(10,37,112,.4);
+    display:grid; place-items:center; cursor:pointer; user-select:none;
+    font-weight:900; font-size:15px; letter-spacing:-.02em; line-height:1.05; text-align:center;
+    transition:transform .12s ease;
+  }
+  .hub:active{transform:translate(-50%,-50%) scale(.94)}
+  .hub.disabled{background:var(--faint); box-shadow:none; cursor:not-allowed}
+  .hub small{font-size:9px; font-weight:700; opacity:.85; display:block}
+  .pointer{
+    position:absolute; top:-20px; left:50%; transform:translateX(-50%); z-index:6;
+    width:0;height:0; border-left:15px solid transparent; border-right:15px solid transparent;
+    border-top:26px solid var(--danger);
+    filter:drop-shadow(0 3px 4px rgba(0,15,44,.3));
+  }
+  .pointer::after{
+    content:""; position:absolute; top:-30px; left:-7px; width:14px; height:14px;
+    border-radius:50%; background:var(--danger); border:2px solid #fff;
+  }
+  .spin-hint{margin-top:16px; font-size:12.5px; color:var(--mute); font-weight:600}
+  .spin-hint b{color:var(--blue)}
+
+  /* ── Prize tiers ─────────────────────────────── */
+  .section{padding:24px 22px}
+  .sec-title{font-size:18px; font-weight:800; letter-spacing:-.02em; margin:0 0 4px}
+  .sec-sub{font-size:12.5px; color:var(--mute); margin:0 0 16px}
+  .tier{
+    display:flex; align-items:center; gap:12px; padding:13px 14px; border-radius:14px;
+    border:1px solid var(--line); background:#fff; margin-bottom:10px; box-shadow:var(--shadow-card);
+  }
+  .tier .rank{
+    flex:none; width:40px; height:40px; border-radius:11px; display:grid; place-items:center;
+    font-weight:900; font-size:15px; color:#fff;
+  }
+  .tier.t1 .rank{background:linear-gradient(135deg,#E8A317,#F6C453)}
+  .tier.t2 .rank{background:linear-gradient(135deg,#6A7896,#A6B0BE)}
+  .tier.t3 .rank{background:linear-gradient(135deg,#B06A2E,#D69557)}
+  .tier .info{flex:1; min-width:0}
+  .tier .info .name{font-size:14.5px; font-weight:700; letter-spacing:-.01em}
+  .tier .info .desc{font-size:12px; color:var(--mute); margin-top:1px}
+  .tier .odds{flex:none; font-size:11px; font-weight:700; color:var(--blue); background:var(--blue-soft); padding:5px 9px; border-radius:999px}
+
+  /* ── Form / participate ─────────────────────────────── */
+  .form-sec{background:var(--mist); border-top:1px solid var(--line)}
+  .card{background:#fff; border:1px solid var(--line); border-radius:16px; padding:20px 18px; box-shadow:var(--shadow-card)}
+  .field{margin-bottom:14px}
+  .field label{display:block; font-size:12.5px; font-weight:700; color:var(--ink-soft); margin-bottom:6px}
+  .field input{
+    width:100%; padding:13px 14px; border:1px solid var(--edge); border-radius:var(--radius);
+    font-family:var(--font); font-size:14.5px; color:var(--ink); background:#fff;
+  }
+  .field input::placeholder{color:var(--faint)}
+  .field input:focus{outline:none; border-color:var(--blue); box-shadow:0 0 0 3px rgba(27,89,250,.14)}
+  .consent{display:flex; align-items:flex-start; gap:9px; padding:12px 13px; background:var(--mist); border-radius:10px; margin-bottom:16px}
+  .consent input{margin-top:2px; width:17px; height:17px; accent-color:var(--blue); flex:none}
+  .consent label{font-size:12px; color:var(--ink-soft); line-height:1.5}
+  .consent a{color:var(--blue); text-decoration:underline; font-weight:600}
+  .btn-primary{
+    width:100%; padding:15px; border:none; border-radius:var(--radius); cursor:pointer;
+    background:var(--grad); color:#fff; font-family:var(--font); font-weight:800; font-size:15.5px;
+    letter-spacing:-.01em; box-shadow:0 8px 22px rgba(27,89,250,.32);
+    transition:transform .12s ease, opacity .12s ease;
+  }
+  .btn-primary:active{transform:translateY(1px) scale(.995)}
+  .btn-primary:disabled{background:var(--faint); box-shadow:none; cursor:not-allowed}
+  .trust{display:flex; justify-content:center; gap:16px; margin-top:14px; flex-wrap:wrap}
+  .trust span{font-size:11px; color:var(--mute); display:inline-flex; align-items:center; gap:5px; font-weight:600}
+  .trust svg{width:13px;height:13px; color:var(--success)}
+
+  /* ── Notice ─────────────────────────────── */
+  .notice{padding:22px; background:#fff}
+  .notice h3{font-size:13px; font-weight:800; color:var(--ink-soft); margin:0 0 10px}
+  .notice ul{margin:0; padding-left:16px}
+  .notice li{font-size:11.5px; color:var(--mute); line-height:1.75; margin-bottom:3px}
+
+  /* ── Footer ─────────────────────────────── */
+  footer{background:var(--navy); color:#fff; padding:26px 22px 34px}
+  footer .flogo{display:flex; align-items:center; gap:7px; font-weight:800; font-size:15px; margin-bottom:12px}
+  footer .flogo .mark{width:20px;height:20px;border-radius:6px;background:var(--grad);display:grid;place-items:center;font-size:11px;font-weight:900}
+  footer p{margin:2px 0; font-size:11px; color:rgba(255,255,255,.6); line-height:1.7}
+  footer .fnav{display:flex; gap:14px; margin:14px 0 12px; flex-wrap:wrap}
+  footer .fnav a{font-size:12px; color:rgba(255,255,255,.85); text-decoration:none; font-weight:600}
+  footer .copy{font-size:10.5px; color:rgba(255,255,255,.4); margin-top:14px}
+
+  /* ── Result modal ─────────────────────────────── */
+  .overlay{
+    position:fixed; inset:0; z-index:60; background:rgba(0,15,44,.62);
+    display:none; align-items:center; justify-content:center; padding:24px;
+    backdrop-filter:blur(3px);
+  }
+  .overlay.on{display:flex; animation:fade .2s ease}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  .modal{
+    width:100%; max-width:340px; background:#fff; border-radius:20px; padding:28px 24px 22px;
+    text-align:center; box-shadow:var(--shadow-pop); animation:pop .32s cubic-bezier(.2,.9,.25,1.3);
+  }
+  @keyframes pop{from{transform:scale(.86) translateY(10px); opacity:0}to{transform:none; opacity:1}}
+  .modal .emoji{font-size:48px; line-height:1; margin-bottom:8px}
+  .modal h2{margin:0 0 6px; font-size:22px; font-weight:800; letter-spacing:-.02em}
+  .modal .prize{
+    display:inline-block; margin:6px 0 12px; padding:9px 18px; border-radius:999px;
+    background:var(--blue-soft); color:var(--blue); font-weight:800; font-size:16px;
+  }
+  .modal p{margin:0 0 18px; font-size:13px; color:var(--mute)}
+  .modal .btn-primary{margin-bottom:8px}
+  .modal .btn-ghost{
+    width:100%; padding:12px; border:none; background:none; cursor:pointer;
+    color:var(--mute); font-family:var(--font); font-size:13px; font-weight:600;
+  }
+  .confetti{position:fixed; inset:0; pointer-events:none; z-index:59}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <div class="logo"><span class="mark">S</span><span class="brand">Safe<b>doc</b></span></div>
+    <span class="badge">EVENT</span>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-inner">
+      <span class="eyebrow"><span class="dot"></span>회원 전용 · 하루 한 번</span>
+      <h1>돌리면 나온다!<br><span class="hl">건강검진·복지</span> 혜택 룰렛</h1>
+      <p>세이프닥 회원이라면 누구나, 매일 한 번씩<br>돌려서 검진 할인·복지몰 혜택을 받아가세요.</p>
+      <div class="countdown" id="countdown" aria-label="이벤트 종료까지 남은 시간">
+        <div class="cd-cell"><div class="cd-num" id="cd-d">00</div><div class="cd-lab">DAYS</div></div>
+        <div class="cd-cell"><div class="cd-num" id="cd-h">00</div><div class="cd-lab">HRS</div></div>
+        <div class="cd-cell"><div class="cd-num" id="cd-m">00</div><div class="cd-lab">MIN</div></div>
+        <div class="cd-cell"><div class="cd-num" id="cd-s">00</div><div class="cd-lab">SEC</div></div>
+      </div>
+      <div class="cd-note">이벤트 종료까지 남은 시간</div>
+    </div>
+  </section>
+
+  <!-- Wheel -->
+  <section class="wheel-sec">
+    <div class="wheel-wrap">
+      <div class="wheel-ring"></div>
+      <div class="pointer"></div>
+      <div class="wheel" id="wheel"></div>
+      <div class="hub" id="hub" role="button" tabindex="0" aria-label="룰렛 돌리기">START<small>돌리기</small></div>
+    </div>
+    <div class="spin-hint">가운데 <b>START</b> 버튼을 눌러 룰렛을 돌려보세요</div>
+  </section>
+
+  <!-- Prize tiers -->
+  <section class="section">
+    <h2 class="sec-title">🎁 이번 주 경품</h2>
+    <p class="sec-sub">룰렛 8칸 중 어디에 멈추느냐에 따라 혜택이 달라져요.</p>
+    <div class="tier t1">
+      <div class="rank">1등</div>
+      <div class="info"><div class="name">종합 건강검진 30% 할인 쿠폰</div><div class="desc">제휴 병원 전 검진 프로그램 적용</div></div>
+      <div class="odds">5%</div>
+    </div>
+    <div class="tier t2">
+      <div class="rank">2등</div>
+      <div class="info"><div class="name">복지몰 20,000원 적립금</div><div class="desc">세이프닥 복지몰 즉시 사용 가능</div></div>
+      <div class="odds">15%</div>
+    </div>
+    <div class="tier t3">
+      <div class="rank">3등</div>
+      <div class="info"><div class="name">스타벅스 아메리카노 · 편의점 상품권</div><div class="desc">건강검진 10% 쿠폰 / 5,000원 적립금 등</div></div>
+      <div class="odds">50%</div>
+    </div>
+  </section>
+
+  <!-- Participate form -->
+  <section class="section form-sec">
+    <h2 class="sec-title">응모하고 결과 받기</h2>
+    <p class="sec-sub">당첨 혜택은 아래 연락처로 안내드려요. 회원 인증 후 자동 지급됩니다.</p>
+    <form class="card" id="form" novalidate>
+      <div class="field">
+        <label for="name">이름</label>
+        <input id="name" type="text" placeholder="홍길동" autocomplete="name" />
+      </div>
+      <div class="field">
+        <label for="phone">휴대폰 번호</label>
+        <input id="phone" type="tel" inputmode="numeric" placeholder="010-0000-0000" autocomplete="tel" />
+      </div>
+      <div class="consent">
+        <input id="agree" type="checkbox" />
+        <label for="agree"><b>[필수]</b> 개인정보 수집·이용 및 이벤트 안내 수신에 동의합니다. <a href="#notice">약관 보기</a></label>
+      </div>
+      <button type="submit" class="btn-primary" id="submitBtn">응모하고 룰렛 돌리기</button>
+      <div class="trust">
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>안전한 개인정보 보호</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>당첨 즉시 자동 지급</span>
+      </div>
+    </form>
+  </section>
+
+  <!-- Notice -->
+  <section class="notice" id="notice">
+    <h3>유의사항</h3>
+    <ul>
+      <li>본 이벤트는 세이프닥 회원 대상이며, 1인 1일 1회 참여 가능합니다.</li>
+      <li>당첨된 쿠폰·적립금은 회원 인증 완료 후 마이페이지에 자동 지급됩니다.</li>
+      <li>건강검진 할인 쿠폰은 제휴 병원 프로그램에 한해 적용되며, 유효기간은 발급일로부터 60일입니다.</li>
+      <li>부정한 방법으로 참여한 경우 당첨이 취소될 수 있습니다.</li>
+      <li>경품은 예산 소진 시 조기 종료되거나 동등 가치의 상품으로 대체될 수 있습니다.</li>
+      <li>본 페이지는 세이프닥 스타일 데모이며 실제 이벤트가 아닙니다.</li>
+    </ul>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="flogo"><span class="mark">S</span> Safedoc</div>
+    <p>건강검진부터 복지 혜택까지, 믿을 수 있는 의료 파트너</p>
+    <div class="fnav">
+      <a href="#">이용약관</a><a href="#">개인정보처리방침</a><a href="#">고객센터</a>
+    </div>
+    <p>주식회사 세이프닥 · 대표 000 · 사업자등록번호 000-00-00000</p>
+    <p>서울특별시 ○○구 ○○로 00, 00층</p>
+    <div class="copy">© 2026 Safedoc. All rights reserved. · 데모 페이지</div>
+  </footer>
+
+</div>
+
+<!-- Result modal -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="emoji" id="mEmoji">🎉</div>
+    <h2 id="mTitle">축하합니다!</h2>
+    <div class="prize" id="mPrize">건강검진 30% 할인 쿠폰</div>
+    <p id="mDesc">당첨 혜택은 입력하신 연락처로 안내드릴게요.</p>
+    <button class="btn-primary" id="mClaim">혜택 받기</button>
+    <button class="btn-ghost" id="mClose">닫기</button>
+  </div>
+</div>
+<canvas class="confetti" id="confetti"></canvas>
+
+<script>
+(function(){
+  /* ── Prize segments (8칸, 포인터 기준 상단 12시) ─────────────── */
+  var SEGMENTS = [
+    { label:"검진 30%", name:"종합 건강검진 30% 할인 쿠폰", emoji:"🏆", win:true,  weight:5 },
+    { label:"5,000원",  name:"복지몰 5,000원 적립금",       emoji:"💙", win:true,  weight:14 },
+    { label:"꽝",       name:"아쉽지만 다음 기회에!",        emoji:"😢", win:false, weight:13 },
+    { label:"복지 2만", name:"복지몰 20,000원 적립금",       emoji:"🎁", win:true,  weight:15 },
+    { label:"스벅",     name:"스타벅스 아메리카노 기프티콘", emoji:"☕", win:true,  weight:12 },
+    { label:"꽝",       name:"아쉽지만 다음 기회에!",        emoji:"😢", win:false, weight:14 },
+    { label:"검진 10%", name:"건강검진 10% 할인 쿠폰",       emoji:"🩺", win:true,  weight:12 },
+    { label:"편의점",   name:"편의점 3,000원 상품권",        emoji:"🏪", win:true,  weight:15 }
+  ];
+  var N = SEGMENTS.length, SEG = 360 / N;
+  var COLORS = ["#1B59FA","#EEF3FF"]; // alternating brand / soft
+  var C1="#0A2BD0";
+
+  /* ── Build wheel SVG ─────────────── */
+  var wheel = document.getElementById("wheel");
+  var cx=100, cy=100, r=100;
+  function pt(a){ var rad=(a-90)*Math.PI/180; return [cx+r*Math.cos(rad), cy+r*Math.sin(rad)]; }
+  var svg='<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">';
+  for(var i=0;i<N;i++){
+    var a0=i*SEG, a1=(i+1)*SEG;
+    var p0=pt(a0), p1=pt(a1);
+    var fill = (i%2===0) ? "#1B59FA" : "#EAF0FF";
+    if(!SEGMENTS[i].win) fill = (i%2===0) ? "#6A7896" : "#E7EAF0";
+    svg+='<path d="M'+cx+','+cy+' L'+p0[0].toFixed(2)+','+p0[1].toFixed(2)+' A'+r+','+r+' 0 0 1 '+p1[0].toFixed(2)+','+p1[1].toFixed(2)+' Z" fill="'+fill+'"/>';
+    // label
+    var mid=a0+SEG/2, lr=64, lrad=(mid-90)*Math.PI/180;
+    var lx=cx+lr*Math.cos(lrad), ly=cy+lr*Math.sin(lrad);
+    var light = (i%2===0);
+    var tcol = SEGMENTS[i].win ? (light?"#fff":"#0F3FCC") : (light?"#fff":"#6A7896");
+    svg+='<g transform="translate('+lx.toFixed(1)+','+ly.toFixed(1)+') rotate('+mid+')">';
+    svg+='<text class="wheel-seg-label" text-anchor="middle" fill="'+tcol+'" dy="-2">'+SEGMENTS[i].emoji+'</text>';
+    svg+='<text class="wheel-seg-label" text-anchor="middle" fill="'+tcol+'" dy="9">'+SEGMENTS[i].label+'</text>';
+    svg+='</g>';
+  }
+  svg+='<circle cx="100" cy="100" r="99" fill="none" stroke="rgba(0,15,44,.08)" stroke-width="2"/>';
+  svg+='</svg>';
+  wheel.innerHTML=svg;
+
+  /* ── Weighted pick ─────────────── */
+  function pick(){
+    var total=SEGMENTS.reduce(function(s,x){return s+x.weight;},0);
+    var rnd=Math.random()*total, acc=0;
+    for(var i=0;i<N;i++){ acc+=SEGMENTS[i].weight; if(rnd<acc) return i; }
+    return N-1;
+  }
+
+  /* ── Spin ─────────────── */
+  var hub=document.getElementById("hub");
+  var spinning=false, rotation=0, hasSpun=false;
+  function spin(){
+    if(spinning || hasSpun) return;
+    spinning=true; hub.classList.add("disabled"); hub.innerHTML='도는 중...';
+    var idx=pick();
+    // target: pointer at top (12 o'clock). Segment i spans [i*SEG,(i+1)*SEG] from top clockwise.
+    var segCenter = idx*SEG + SEG/2;
+    var turns = 5;
+    var target = turns*360 + (360 - segCenter);
+    rotation += target;
+    wheel.style.transform="rotate("+rotation+"deg)";
+    setTimeout(function(){
+      spinning=false; hasSpun=true;
+      hub.innerHTML='완료';
+      showResult(SEGMENTS[idx]);
+    }, 5100);
+  }
+  hub.addEventListener("click", spin);
+  hub.addEventListener("keydown", function(e){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); spin(); }});
+
+  /* ── Result modal ─────────────── */
+  var overlay=document.getElementById("overlay");
+  function showResult(seg){
+    document.getElementById("mEmoji").textContent=seg.emoji;
+    if(seg.win){
+      document.getElementById("mTitle").textContent="축하합니다! 🎉";
+      document.getElementById("mPrize").style.display="";
+      document.getElementById("mPrize").textContent=seg.name;
+      document.getElementById("mDesc").textContent="입력하신 연락처로 혜택을 안내드릴게요. 마이페이지에서도 확인할 수 있어요.";
+      document.getElementById("mClaim").textContent="혜택 받기";
+      confetti();
+    } else {
+      document.getElementById("mTitle").textContent="아쉬워요 😢";
+      document.getElementById("mPrize").style.display="none";
+      document.getElementById("mDesc").textContent=seg.name+" 내일 다시 도전하면 또 기회가 있어요!";
+      document.getElementById("mClaim").textContent="내일 다시 도전";
+    }
+    overlay.classList.add("on");
+  }
+  document.getElementById("mClose").addEventListener("click", function(){ overlay.classList.remove("on"); });
+  document.getElementById("mClaim").addEventListener("click", function(){ overlay.classList.remove("on"); document.getElementById("form").scrollIntoView({behavior:"smooth"}); });
+  overlay.addEventListener("click", function(e){ if(e.target===overlay) overlay.classList.remove("on"); });
+
+  /* ── Form ─────────────── */
+  var phone=document.getElementById("phone");
+  phone.addEventListener("input", function(){
+    var v=this.value.replace(/\D/g,"").slice(0,11);
+    if(v.length>7) v=v.replace(/(\d{3})(\d{4})(\d+)/,"$1-$2-$3");
+    else if(v.length>3) v=v.replace(/(\d{3})(\d+)/,"$1-$2");
+    this.value=v;
+  });
+  document.getElementById("form").addEventListener("submit", function(e){
+    e.preventDefault();
+    var name=document.getElementById("name").value.trim();
+    var ph=phone.value.trim();
+    var agree=document.getElementById("agree").checked;
+    if(!name){ document.getElementById("name").focus(); return alert("이름을 입력해주세요."); }
+    if(ph.replace(/\D/g,"").length<10){ phone.focus(); return alert("휴대폰 번호를 정확히 입력해주세요."); }
+    if(!agree){ return alert("개인정보 수집·이용에 동의해주세요."); }
+    if(!hasSpun){
+      document.querySelector(".wheel-sec").scrollIntoView({behavior:"smooth"});
+      setTimeout(spin, 500);
+    } else {
+      alert("응모가 완료되었습니다! (데모)");
+    }
+  });
+
+  /* ── Countdown (7일 뒤 자정 기준) ─────────────── */
+  var end=new Date(); end.setDate(end.getDate()+7); end.setHours(23,59,59,0);
+  function pad(n){ return String(n).padStart(2,"0"); }
+  function tick(){
+    var diff=end - new Date();
+    if(diff<0) diff=0;
+    var d=Math.floor(diff/86400000);
+    var h=Math.floor(diff%86400000/3600000);
+    var m=Math.floor(diff%3600000/60000);
+    var s=Math.floor(diff%60000/1000);
+    document.getElementById("cd-d").textContent=pad(d);
+    document.getElementById("cd-h").textContent=pad(h);
+    document.getElementById("cd-m").textContent=pad(m);
+    document.getElementById("cd-s").textContent=pad(s);
+  }
+  tick(); setInterval(tick,1000);
+
+  /* ── Confetti ─────────────── */
+  var cv=document.getElementById("confetti"), ctx=cv.getContext("2d"), parts=[];
+  function resize(){ cv.width=innerWidth; cv.height=innerHeight; }
+  resize(); addEventListener("resize", resize);
+  function confetti(){
+    var cols=["#1B59FA","#28E8FF","#CDFF1C","#E8A317","#0A2BD0"];
+    parts=[];
+    for(var i=0;i<120;i++){
+      parts.push({ x:innerWidth/2, y:innerHeight/2, vx:(Math.random()-.5)*14, vy:(Math.random()-.5)*14-4,
+        s:Math.random()*7+4, c:cols[i%cols.length], rot:Math.random()*360, vr:(Math.random()-.5)*20, life:1 });
+    }
+    run();
+  }
+  function run(){
+    ctx.clearRect(0,0,cv.width,cv.height);
+    var alive=false;
+    for(var i=0;i<parts.length;i++){
+      var p=parts[i]; if(p.life<=0) continue; alive=true;
+      p.x+=p.vx; p.y+=p.vy; p.vy+=.4; p.vx*=.99; p.rot+=p.vr; p.life-=.011;
+      ctx.save(); ctx.globalAlpha=Math.max(0,p.life); ctx.translate(p.x,p.y); ctx.rotate(p.rot*Math.PI/180);
+      ctx.fillStyle=p.c; ctx.fillRect(-p.s/2,-p.s/2,p.s,p.s*.6); ctx.restore();
+    }
+    if(alive) requestAnimationFrame(run); else ctx.clearRect(0,0,cv.width,cv.height);
+  }
+})();
+</script>
+</body>
+</html>
