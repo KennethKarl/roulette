@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>세이프닥 복지 룰렛 이벤트 — 매일 한 번, 건강검진·복지 혜택 뽑기</title>
+<meta name="description" content="하루 한 번 룰렛을 돌리고 건강검진 할인 쿠폰과 복지몰 혜택을 받아가세요. 세이프닥 회원이라면 누구나 참여 가능." />
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+<style>
+  :root{
+    --blue:#1B59FA; --blue-dark:#0F3FCC; --blue-soft:#EEF3FF; --blue-100:#D7E2FF;
+    --ink:#0A1226; --ink-soft:#2B3858; --mute:#6A7896; --faint:#A6B0BE;
+    --line:#ECEEF3; --edge:#D5DAE3; --mist:#FAFBFD; --cloud:#F3F5F9;
+    --aqua:#28E8FF; --lime:#CDFF1C; --success:#1E8E5C; --danger:#C8321F;
+    --navy:#060B1C; --navy-2:#0C1533;
+    /* premium gold */
+    --gold:#C9A24B; --gold-lt:#F3D98B; --gold-dk:#9A7726;
+    --gold-grad:linear-gradient(135deg,#F6E3A6 0%,#D9B45E 42%,#B98F38 100%);
+    --grad:linear-gradient(122deg,#0A2BD0 0%,#1B59FA 58%,#2F72FF 100%);
+    --grad-hero:radial-gradient(140% 120% at 15% -10%,#123 0%,#060B1C 55%),linear-gradient(160deg,#0A1440 0%,#060B1C 70%);
+    --shadow-card:0 1px 2px rgba(10,18,38,.05),0 6px 20px rgba(10,18,38,.06);
+    --shadow-soft:0 10px 34px rgba(10,18,38,.10);
+    --shadow-pop:0 30px 70px rgba(6,11,28,.34);
+    --radius:12px;
+    --font:'Pretendard Variable','Noto Sans','Noto Sans KR',Helvetica,Arial,-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:var(--font); color:var(--ink);
+    background:
+      radial-gradient(120% 80% at 50% -10%,#e9edf7 0%,transparent 60%),
+      var(--cloud);
+    -webkit-font-smoothing:antialiased; line-height:1.62; letter-spacing:-.005em;
+    word-break:keep-all; overflow-wrap:break-word;
+  }
+  .shell{
+    max-width:440px; margin:0 auto; background:#fff; min-height:100vh; position:relative; overflow:hidden;
+    box-shadow:0 0 0 1px rgba(10,18,38,.04),0 40px 90px rgba(10,18,38,.12);
+  }
+
+  /* ── Top brand bar ─────────────────────────────── */
+  .topbar{
+    display:flex; align-items:center; gap:8px; padding:15px 20px;
+    position:sticky; top:0; z-index:30; background:rgba(255,255,255,.82);
+    backdrop-filter:saturate(180%) blur(16px); -webkit-backdrop-filter:saturate(180%) blur(16px);
+    border-bottom:1px solid rgba(10,18,38,.06);
+  }
+  .logo{display:flex; align-items:center; gap:8px; font-weight:800; font-size:16px; letter-spacing:-.03em}
+  .logo .mark{
+    width:24px; height:24px; border-radius:8px; background:var(--grad);
+    display:grid; place-items:center; color:#fff; font-size:12px; font-weight:900;
+    box-shadow:0 3px 10px rgba(27,89,250,.42), inset 0 1px 0 rgba(255,255,255,.35);
+  }
+  .logo .brand{color:var(--ink)}
+  .logo .brand b{color:var(--blue)}
+  .topbar .badge{
+    margin-left:auto; font-size:10.5px; font-weight:800; letter-spacing:.14em; color:var(--gold-dk);
+    background:linear-gradient(135deg,#FBF3DC,#F1E0B0); border:1px solid #EAD79E;
+    padding:5px 12px; border-radius:999px; text-transform:uppercase;
+  }
+
+  /* ── Hero ─────────────────────────────── */
+  .hero{
+    background:var(--grad-hero); color:#fff; padding:36px 24px 30px; text-align:center;
+    position:relative; overflow:hidden;
+  }
+  .hero::before, .hero::after{content:""; position:absolute; border-radius:50%; pointer-events:none}
+  .hero::before{
+    width:260px;height:260px; top:-110px; right:-80px;
+    background:radial-gradient(circle,rgba(47,114,255,.55),transparent 68%); filter:blur(6px);
+    animation:float1 9s ease-in-out infinite;
+  }
+  .hero::after{
+    width:240px;height:240px; bottom:-120px; left:-70px;
+    background:radial-gradient(circle,rgba(201,162,75,.28),transparent 70%); filter:blur(8px);
+    animation:float2 11s ease-in-out infinite;
+  }
+  @keyframes float1{0%,100%{transform:translate(0,0)}50%{transform:translate(-14px,16px)}}
+  @keyframes float2{0%,100%{transform:translate(0,0)}50%{transform:translate(12px,-14px)}}
+  .hero-inner{position:relative; z-index:1}
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:7px; font-size:11.5px; font-weight:700; letter-spacing:.02em;
+    background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.20);
+    color:#EAF0FF; padding:6px 14px; border-radius:999px; margin-bottom:16px;
+    backdrop-filter:blur(6px);
+  }
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--gold-lt);box-shadow:0 0 10px var(--gold-lt)}
+  .hero h1{margin:0 0 10px; font-size:27px; line-height:1.3; font-weight:800; letter-spacing:-.035em}
+  .hero h1 .hl{
+    background:var(--gold-grad); -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .hero p{margin:0 auto; max-width:310px; font-size:13.5px; color:rgba(233,238,250,.78); font-weight:500}
+
+  /* ── Countdown ─────────────────────────────── */
+  .countdown{display:flex; justify-content:center; align-items:stretch; gap:7px; margin-top:22px}
+  .cd-cell{
+    background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.03));
+    border:1px solid rgba(255,255,255,.14); border-radius:14px; padding:10px 4px 8px; min-width:60px;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.10), 0 8px 20px rgba(0,0,0,.22);
+    backdrop-filter:blur(4px);
+  }
+  .cd-num{
+    font-size:26px; font-weight:800; line-height:1; letter-spacing:-.03em; font-variant-numeric:tabular-nums;
+    background:linear-gradient(180deg,#fff,#c9d4ee); -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .cd-lab{font-size:9.5px; color:rgba(233,238,250,.55); margin-top:7px; font-weight:700; letter-spacing:.16em}
+  .cd-note{margin-top:15px; font-size:11px; color:rgba(233,238,250,.6); letter-spacing:.01em}
+
+  /* ── Department chip (선택된 진료과) ─────────────────────────────── */
+  .dept-chip{
+    display:inline-flex; align-items:center; gap:8px; margin:2px auto 0; padding:8px 8px 8px 14px;
+    background:#fff; border:1px solid var(--blue-100); border-radius:999px;
+    box-shadow:var(--shadow-card); font-size:13px; font-weight:600; color:var(--ink-soft);
+  }
+  .dept-chip .ic{width:20px;height:20px;color:var(--blue);display:grid;place-items:center}
+  .dept-chip .ic svg{width:20px;height:20px}
+  .dept-chip b{color:var(--blue-dark); font-weight:800; margin-left:-2px}
+  .dept-chip .change{
+    border:none; background:var(--blue-soft); color:var(--blue); font-family:var(--font);
+    font-size:11.5px; font-weight:700; padding:5px 11px; border-radius:999px; cursor:pointer;
+  }
+
+  /* ── Wheel section ─────────────────────────────── */
+  .wheel-sec{padding:24px 22px 12px; text-align:center;
+    background:
+      radial-gradient(120% 90% at 50% -8%,#fff 0%,var(--mist) 60%,#eef1f7 100%);
+    border-bottom:1px solid var(--line);
+  }
+  .wheel-wrap{position:relative; width:300px; height:300px; margin:16px auto 0}
+  /* metallic gold rim */
+  .wheel-ring{
+    position:absolute; inset:-16px; border-radius:50%;
+    background:conic-gradient(from 210deg,#8A6A26,#F3D98B,#B98F38,#FBE9BE,#9A7726,#F3D98B,#8A6A26);
+    box-shadow:var(--shadow-pop), 0 0 0 1px rgba(154,119,38,.5);
+  }
+  .wheel-ring::after{
+    content:""; position:absolute; inset:9px; border-radius:50%;
+    background:radial-gradient(circle at 50% 30%,#ffffff,#eef1f7);
+    box-shadow:inset 0 2px 6px rgba(10,18,38,.14);
+  }
+  .wheel{
+    position:absolute; inset:2px; border-radius:50%;
+    transition:transform 5.4s cubic-bezier(.11,.83,.16,1);
+    box-shadow:inset 0 0 0 5px #fff, inset 0 0 0 6px rgba(154,119,38,.35), 0 8px 24px rgba(10,18,38,.2);
+    z-index:2;
+  }
+  .wheel svg{width:100%; height:100%; display:block}
+  .wheel-seg-label{font-size:9.5px; font-weight:800; letter-spacing:-.02em}
+  /* glossy overlay to give wheel a premium sheen */
+  .wheel-gloss{
+    position:absolute; inset:2px; border-radius:50%; z-index:3; pointer-events:none;
+    background:
+      radial-gradient(80% 55% at 50% 12%,rgba(255,255,255,.42),rgba(255,255,255,0) 60%),
+      linear-gradient(180deg,rgba(255,255,255,.10),rgba(10,18,38,.06));
+  }
+  .hub{
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    width:72px; height:72px; border-radius:50%; z-index:5;
+    background:
+      radial-gradient(circle at 50% 32%,#2F72FF,#0A2BD0 78%);
+    color:#fff; border:3px solid #fff;
+    box-shadow:
+      0 8px 22px rgba(10,37,112,.45),
+      inset 0 2px 5px rgba(255,255,255,.35),
+      inset 0 -6px 12px rgba(0,0,0,.22),
+      0 0 0 4px rgba(201,162,75,.55);
+    display:grid; place-items:center; cursor:pointer; user-select:none;
+    font-weight:900; font-size:15px; letter-spacing:.02em; line-height:1.05; text-align:center;
+    transition:transform .14s ease, box-shadow .2s ease;
+  }
+  .hub:active{transform:translate(-50%,-50%) scale(.93)}
+  .hub.disabled{background:radial-gradient(circle at 50% 32%,#9aa4b8,#6A7896); box-shadow:0 0 0 4px rgba(166,176,190,.4); cursor:not-allowed}
+  .hub small{font-size:9px; font-weight:700; opacity:.9; display:block; letter-spacing:.06em; margin-top:1px}
+  .pointer{
+    position:absolute; top:-24px; left:50%; transform:translateX(-50%); z-index:6;
+    width:0;height:0; border-left:14px solid transparent; border-right:14px solid transparent;
+    border-top:28px solid var(--gold-dk);
+    filter:drop-shadow(0 3px 4px rgba(6,11,28,.4));
+  }
+  .pointer::before{
+    content:""; position:absolute; top:-28px; left:-14px; width:0;height:0;
+    border-left:14px solid transparent; border-right:14px solid transparent;
+    border-top:24px solid var(--gold-lt);
+  }
+  .pointer::after{
+    content:""; position:absolute; top:-40px; left:-8px; width:16px; height:16px;
+    border-radius:50%; background:var(--gold-grad); border:2px solid #fff;
+    box-shadow:0 2px 6px rgba(6,11,28,.35);
+  }
+  .spin-hint{margin-top:20px; font-size:12.5px; color:var(--mute); font-weight:600}
+  .spin-hint b{
+    background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; font-weight:800;
+  }
+
+  /* ── Prize tiers ─────────────────────────────── */
+  .section{padding:26px 22px}
+  .sec-title{font-size:19px; font-weight:800; letter-spacing:-.03em; margin:0 0 5px}
+  .sec-sub{font-size:12.5px; color:var(--mute); margin:0 0 18px}
+  .tier{
+    display:flex; align-items:center; gap:13px; padding:14px 15px; border-radius:16px;
+    border:1px solid var(--line); background:#fff; margin-bottom:11px; box-shadow:var(--shadow-card);
+    position:relative; overflow:hidden;
+  }
+  .tier::before{content:""; position:absolute; left:0; top:0; bottom:0; width:3px}
+  .tier.t1::before{background:var(--gold-grad)}
+  .tier.t2::before{background:linear-gradient(180deg,#D6DBE6,#9AA4B8)}
+  .tier.t3::before{background:linear-gradient(180deg,#E0A876,#B06A2E)}
+  .tier .rank{
+    flex:none; width:44px; height:44px; border-radius:13px; display:grid; place-items:center;
+    font-weight:900; font-size:14px; color:#fff; letter-spacing:-.02em;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.4), 0 4px 10px rgba(10,18,38,.12);
+  }
+  .tier.t1 .rank{background:var(--gold-grad); color:#5A4416; text-shadow:0 1px 0 rgba(255,255,255,.4)}
+  .tier.t2 .rank{background:linear-gradient(135deg,#EDF0F5,#B4BCCB); color:#4B5468}
+  .tier.t3 .rank{background:linear-gradient(135deg,#E8B98C,#B06A2E)}
+  .tier .info{flex:1; min-width:0}
+  .tier .info .name{font-size:14.5px; font-weight:700; letter-spacing:-.02em}
+  .tier .info .desc{font-size:12px; color:var(--mute); margin-top:2px}
+  .tier .odds{
+    flex:none; font-size:11px; font-weight:800; color:var(--blue-dark);
+    background:linear-gradient(135deg,#F1F5FF,#DEE8FF); padding:5px 10px; border-radius:999px;
+    border:1px solid #DBE4FB;
+  }
+
+  /* ── Form / participate ─────────────────────────────── */
+  .form-sec{
+    background:linear-gradient(180deg,var(--mist),#eef1f7);
+    border-top:1px solid var(--line);
+  }
+  .card{background:#fff; border:1px solid var(--line); border-radius:20px; padding:22px 20px; box-shadow:var(--shadow-soft)}
+  .field{margin-bottom:15px}
+  .field label{display:block; font-size:12.5px; font-weight:700; color:var(--ink-soft); margin-bottom:7px; letter-spacing:-.01em}
+  .field input{
+    width:100%; padding:14px 15px; border:1px solid var(--edge); border-radius:var(--radius);
+    font-family:var(--font); font-size:14.5px; color:var(--ink); background:#fff;
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  .field input::placeholder{color:var(--faint)}
+  .field input:focus{outline:none; border-color:var(--blue); box-shadow:0 0 0 4px rgba(27,89,250,.12)}
+  .consent{display:flex; align-items:flex-start; gap:10px; padding:13px 14px; background:var(--mist); border:1px solid var(--line); border-radius:12px; margin-bottom:18px}
+  .consent input{margin-top:2px; width:17px; height:17px; accent-color:var(--blue); flex:none}
+  .consent label{font-size:12px; color:var(--ink-soft); line-height:1.55}
+  .consent a{color:var(--blue); text-decoration:underline; font-weight:600}
+  .btn-primary{
+    width:100%; padding:16px; border:none; border-radius:var(--radius); cursor:pointer;
+    background:var(--grad); color:#fff; font-family:var(--font); font-weight:800; font-size:15.5px;
+    letter-spacing:-.01em; position:relative; overflow:hidden; text-decoration:none;
+    display:flex; align-items:center; justify-content:center; gap:6px;
+    box-shadow:0 10px 26px rgba(27,89,250,.34), inset 0 1px 0 rgba(255,255,255,.3);
+    transition:transform .12s ease, box-shadow .2s ease;
+  }
+  .btn-primary::after{
+    content:""; position:absolute; top:0; left:-60%; width:40%; height:100%;
+    background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent);
+    transform:skewX(-18deg); animation:sheen 3.6s ease-in-out infinite;
+  }
+  @keyframes sheen{0%,60%{left:-60%}100%{left:130%}}
+  .btn-primary:active{transform:translateY(1px) scale(.995)}
+  .btn-primary:disabled{background:var(--faint); box-shadow:none; cursor:not-allowed}
+  .btn-primary:disabled::after{display:none}
+  .trust{display:flex; justify-content:center; gap:18px; margin-top:16px; flex-wrap:wrap}
+  .trust span{font-size:11px; color:var(--mute); display:inline-flex; align-items:center; gap:5px; font-weight:600}
+  .trust svg{width:13px;height:13px; color:var(--success)}
+
+  /* ── Notice ─────────────────────────────── */
+  .notice{padding:24px 22px; background:#fff}
+  .notice h3{font-size:13px; font-weight:800; color:var(--ink-soft); margin:0 0 12px; letter-spacing:-.01em}
+  .notice ul{margin:0; padding-left:16px}
+  .notice li{font-size:11.5px; color:var(--mute); line-height:1.8; margin-bottom:3px}
+
+  /* ── Footer ─────────────────────────────── */
+  footer{background:var(--navy); color:#fff; padding:30px 22px 38px}
+  footer .flogo{display:flex; align-items:center; gap:8px; font-weight:800; font-size:15px; margin-bottom:14px; letter-spacing:-.02em}
+  footer .flogo .mark{width:22px;height:22px;border-radius:7px;background:var(--grad);display:grid;place-items:center;font-size:11px;font-weight:900;box-shadow:inset 0 1px 0 rgba(255,255,255,.3)}
+  footer p{margin:2px 0; font-size:11px; color:rgba(255,255,255,.55); line-height:1.75}
+  footer .fnav{display:flex; gap:16px; margin:16px 0 14px; flex-wrap:wrap}
+  footer .fnav a{font-size:12px; color:rgba(255,255,255,.82); text-decoration:none; font-weight:600}
+  footer .copy{font-size:10.5px; color:rgba(255,255,255,.38); margin-top:16px; border-top:1px solid rgba(255,255,255,.08); padding-top:16px}
+
+  /* ── Overlay + Result modal ─────────────────────────────── */
+  .overlay{
+    position:fixed; inset:0; z-index:60; background:rgba(6,11,28,.66);
+    display:none; align-items:center; justify-content:center; padding:24px;
+    backdrop-filter:blur(5px); -webkit-backdrop-filter:blur(5px);
+  }
+  .overlay.on{display:flex; animation:fade .22s ease}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  .modal{
+    width:100%; max-width:346px; background:#fff; border-radius:24px; padding:30px 26px 24px;
+    text-align:center; box-shadow:var(--shadow-pop); animation:pop .34s cubic-bezier(.2,.9,.25,1.3);
+    position:relative; overflow:hidden;
+  }
+  .modal::before{
+    content:""; position:absolute; top:-40px; left:50%; transform:translateX(-50%);
+    width:220px; height:220px; border-radius:50%;
+    background:radial-gradient(circle,rgba(201,162,75,.16),transparent 68%); pointer-events:none;
+  }
+  @keyframes pop{from{transform:scale(.86) translateY(12px); opacity:0}to{transform:none; opacity:1}}
+  .modal .emoji{font-size:52px; line-height:1; margin-bottom:10px; position:relative}
+  .modal h2{margin:0 0 6px; font-size:23px; font-weight:800; letter-spacing:-.03em; position:relative}
+  .modal .prize{
+    display:inline-block; margin:8px 0 10px; padding:10px 20px; border-radius:999px; position:relative;
+    background:linear-gradient(135deg,#F1F5FF,#DEE8FF); color:var(--blue-dark); font-weight:800; font-size:16px;
+    border:1px solid #D7E2FF;
+  }
+  .modal p{margin:0 0 18px; font-size:13px; color:var(--mute); position:relative}
+  .modal .m-dept{
+    position:relative; display:flex; align-items:center; justify-content:center; gap:8px;
+    margin:0 0 16px; padding:11px 14px; border-radius:14px;
+    background:var(--mist); border:1px solid var(--line); font-size:13px; font-weight:700; color:var(--ink-soft);
+  }
+  .modal .m-dept .ic{width:22px;height:22px;color:var(--blue);display:grid;place-items:center}
+  .modal .m-dept .ic svg{width:22px;height:22px}
+  .modal .m-dept b{color:var(--blue-dark); font-weight:800}
+  .modal .btn-primary{margin-bottom:8px}
+  .modal .btn-ghost{
+    width:100%; padding:12px; border:none; background:none; cursor:pointer;
+    color:var(--mute); font-family:var(--font); font-size:13px; font-weight:600;
+  }
+  .confetti{position:fixed; inset:0; pointer-events:none; z-index:59}
+
+  /* ── Department picker (bottom sheet) ─────────────────────────────── */
+  .picker{
+    position:fixed; inset:0; z-index:70; background:rgba(6,11,28,.6);
+    display:none; align-items:flex-end; justify-content:center;
+    backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px);
+  }
+  .picker.on{display:flex; animation:fade .2s ease}
+  .picker-sheet{
+    width:100%; max-width:440px; background:#fff; border-radius:26px 26px 0 0;
+    padding:10px 20px calc(24px + env(safe-area-inset-bottom)); box-shadow:0 -20px 60px rgba(6,11,28,.4);
+    animation:sheetUp .34s cubic-bezier(.2,.9,.25,1.05); max-height:88vh; overflow-y:auto;
+  }
+  @keyframes sheetUp{from{transform:translateY(100%)}to{transform:none}}
+  .picker-grab{width:40px;height:4px;border-radius:99px;background:#DCE0E8;margin:0 auto 14px}
+  .picker-head{text-align:center; margin-bottom:18px}
+  .picker-ey{
+    display:inline-block; font-size:11px; font-weight:800; letter-spacing:.02em; color:var(--blue);
+    background:var(--blue-soft); padding:5px 12px; border-radius:999px; margin-bottom:10px;
+  }
+  .picker-title{font-size:20px; font-weight:800; letter-spacing:-.03em; margin:0}
+  .picker-sub{font-size:12.5px; color:var(--mute); margin:5px 0 0}
+  .dept-grid{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:10px 8px;
+  }
+  .dept-tile{
+    display:flex; flex-direction:column; align-items:center; gap:8px; padding:14px 4px 12px;
+    border:1px solid var(--line); border-radius:16px; background:#fff; cursor:pointer;
+    transition:transform .12s ease, border-color .15s ease, box-shadow .15s ease, background .15s ease;
+  }
+  .dept-tile:active{transform:scale(.95)}
+  .dept-tile.sel{border-color:var(--blue); background:var(--blue-soft); box-shadow:0 0 0 3px rgba(27,89,250,.12)}
+  .dept-tile .ic{
+    width:44px; height:44px; border-radius:14px; display:grid; place-items:center;
+    background:linear-gradient(180deg,#F4F7FF,#E8EFFF); color:var(--blue);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.7);
+  }
+  .dept-tile.sel .ic{background:linear-gradient(135deg,#2F72FF,#0A2BD0); color:#fff}
+  .dept-tile .ic svg{width:26px; height:26px}
+  .dept-tile .nm{font-size:12px; font-weight:700; color:var(--ink-soft); letter-spacing:-.02em}
+  .dept-tile.sel .nm{color:var(--blue-dark)}
+  .picker-foot{margin-top:18px}
+  .picker-note{text-align:center; font-size:11px; color:var(--faint); margin-top:10px}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <div class="logo"><span class="mark">S</span><span class="brand">Safe<b>doc</b></span></div>
+    <span class="badge">Event</span>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-inner">
+      <span class="eyebrow"><span class="dot"></span>회원 전용 · 하루 한 번</span>
+      <h1>돌리면 나온다!<br><span class="hl">건강검진·복지</span> 혜택 룰렛</h1>
+      <p>관심 진료과를 고르고 룰렛을 돌려서<br>검진 할인·복지 혜택과 병원까지 한 번에!</p>
+      <div class="countdown" id="countdown" aria-label="이벤트 종료까지 남은 시간">
+        <div class="cd-cell"><div class="cd-num" id="cd-d">00</div><div class="cd-lab">DAYS</div></div>
+        <div class="cd-cell"><div class="cd-num" id="cd-h">00</div><div class="cd-lab">HRS</div></div>
+        <div class="cd-cell"><div class="cd-num" id="cd-m">00</div><div class="cd-lab">MIN</div></div>
+        <div class="cd-cell"><div class="cd-num" id="cd-s">00</div><div class="cd-lab">SEC</div></div>
+      </div>
+      <div class="cd-note">이벤트 종료까지 남은 시간</div>
+    </div>
+  </section>
+
+  <!-- Wheel -->
+  <section class="wheel-sec">
+    <div class="dept-chip" id="deptChip" hidden>
+      <span class="ic" id="deptChipIc"></span>
+      <span>관심 진료과 · <b id="deptChipName">치과</b></span>
+      <button class="change" id="deptChange" type="button">변경</button>
+    </div>
+    <div class="wheel-wrap">
+      <div class="wheel-ring"></div>
+      <div class="pointer"></div>
+      <div class="wheel" id="wheel"></div>
+      <div class="wheel-gloss"></div>
+      <div class="hub" id="hub" role="button" tabindex="0" aria-label="룰렛 돌리기">START<small>돌리기</small></div>
+    </div>
+    <div class="spin-hint" id="spinHint">먼저 <b>관심 진료과</b>를 선택해주세요</div>
+  </section>
+
+  <!-- Prize tiers -->
+  <section class="section">
+    <h2 class="sec-title">🎁 이번 주 경품</h2>
+    <p class="sec-sub">룰렛 8칸 중 어디에 멈추느냐에 따라 혜택이 달라져요.</p>
+    <div class="tier t1">
+      <div class="rank">1등</div>
+      <div class="info"><div class="name">종합 건강검진 30% 할인 쿠폰</div><div class="desc">제휴 병원 전 검진 프로그램 적용</div></div>
+      <div class="odds">5%</div>
+    </div>
+    <div class="tier t2">
+      <div class="rank">2등</div>
+      <div class="info"><div class="name">복지몰 20,000원 적립금</div><div class="desc">세이프닥 복지몰 즉시 사용 가능</div></div>
+      <div class="odds">15%</div>
+    </div>
+    <div class="tier t3">
+      <div class="rank">3등</div>
+      <div class="info"><div class="name">스타벅스 아메리카노 · 편의점 상품권</div><div class="desc">건강검진 10% 쿠폰 / 5,000원 적립금 등</div></div>
+      <div class="odds">50%</div>
+    </div>
+  </section>
+
+  <!-- Participate form -->
+  <section class="section form-sec">
+    <h2 class="sec-title">응모하고 결과 받기</h2>
+    <p class="sec-sub">당첨 혜택은 아래 연락처로 안내드려요. 회원 인증 후 자동 지급됩니다.</p>
+    <form class="card" id="form" novalidate>
+      <div class="field">
+        <label for="name">이름</label>
+        <input id="name" type="text" placeholder="홍길동" autocomplete="name" />
+      </div>
+      <div class="field">
+        <label for="phone">휴대폰 번호</label>
+        <input id="phone" type="tel" inputmode="numeric" placeholder="010-0000-0000" autocomplete="tel" />
+      </div>
+      <div class="consent">
+        <input id="agree" type="checkbox" />
+        <label for="agree"><b>[필수]</b> 개인정보 수집·이용 및 이벤트 안내 수신에 동의합니다. <a href="#notice">약관 보기</a></label>
+      </div>
+      <button type="submit" class="btn-primary" id="submitBtn">응모하고 룰렛 돌리기</button>
+      <div class="trust">
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>안전한 개인정보 보호</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>당첨 즉시 자동 지급</span>
+      </div>
+    </form>
+  </section>
+
+  <!-- Notice -->
+  <section class="notice" id="notice">
+    <h3>유의사항</h3>
+    <ul>
+      <li>본 이벤트는 세이프닥 회원 대상이며, 1인 1일 1회 참여 가능합니다.</li>
+      <li>당첨된 쿠폰·적립금은 회원 인증 완료 후 마이페이지에 자동 지급됩니다.</li>
+      <li>건강검진 할인 쿠폰은 제휴 병원 프로그램에 한해 적용되며, 유효기간은 발급일로부터 60일입니다.</li>
+      <li>부정한 방법으로 참여한 경우 당첨이 취소될 수 있습니다.</li>
+      <li>경품은 예산 소진 시 조기 종료되거나 동등 가치의 상품으로 대체될 수 있습니다.</li>
+      <li>본 페이지는 세이프닥 스타일 데모이며 실제 이벤트가 아닙니다.</li>
+    </ul>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="flogo"><span class="mark">S</span> Safedoc</div>
+    <p>건강검진부터 복지 혜택까지, 믿을 수 있는 의료 파트너</p>
+    <div class="fnav">
+      <a href="#">이용약관</a><a href="#">개인정보처리방침</a><a href="#">고객센터</a>
+    </div>
+    <p>주식회사 세이프닥 · 대표 000 · 사업자등록번호 000-00-00000</p>
+    <p>서울특별시 ○○구 ○○로 00, 00층</p>
+    <div class="copy">© 2026 Safedoc. All rights reserved. · 데모 페이지</div>
+  </footer>
+
+</div>
+
+<!-- Result modal -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="emoji" id="mEmoji">🎉</div>
+    <h2 id="mTitle">축하합니다!</h2>
+    <div class="prize" id="mPrize">건강검진 30% 할인 쿠폰</div>
+    <div class="m-dept" id="mDept" hidden><span class="ic" id="mDeptIc"></span><span><b id="mDeptName">치과</b> 제휴 병원 바로 찾기</span></div>
+    <p id="mDesc">당첨 혜택은 입력하신 연락처로 안내드릴게요.</p>
+    <a class="btn-primary" id="mClaim" href="#" target="_blank" rel="noopener">혜택 받기</a>
+    <button class="btn-ghost" id="mClose">닫기</button>
+  </div>
+</div>
+
+<!-- Department picker (bottom sheet) -->
+<div class="picker" id="picker">
+  <div class="picker-sheet">
+    <div class="picker-grab"></div>
+    <div class="picker-head">
+      <span class="picker-ey">STEP 1</span>
+      <h2 class="picker-title">어떤 진료과 혜택을 찾으세요?</h2>
+      <p class="picker-sub">관심 진료과를 선택하면 룰렛을 돌릴 수 있어요</p>
+    </div>
+    <div class="dept-grid" id="deptGrid"></div>
+    <p class="picker-note">당첨 후, 선택한 진료과의 제휴 병원을 지역별로 바로 볼 수 있어요</p>
+  </div>
+</div>
+
+<canvas class="confetti" id="confetti"></canvas>
+
+<script>
+(function(){
+  /* ══════════════════════════════════════════════════════════════
+     진료과 목록 — safedoc.io 병원검색 딥링크용
+     · departmentName 만으로도 필터가 적용됨(검증 완료).
+     · departmentId 는 아는 값만 채우면 링크 정확도가 올라감(선택).
+       (현재 치과 ID만 확보. 나머지는 확인되는 대로 id 채우기)
+     · icon: 인라인 SVG (stroke=currentColor)
+     ══════════════════════════════════════════════════════════════ */
+  var DEPTS = [
+    { name:"치과",     id:"475690385923386", icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 3.5C5.5 3.5 4 5 4 7.3c0 1.6.5 2.7.9 4.5.3 1.4.3 2.6.6 4.3.2 1.3.5 3.4 1.5 3.4 1.1 0 1-2 1.6-3.4.3-.8.8-1.3 1.4-1.3s1.1.5 1.4 1.3c.6 1.4.5 3.4 1.6 3.4 1 0 1.3-2.1 1.5-3.4.3-1.7.3-2.9.6-4.3.4-1.8.9-2.9.9-4.5C20 5 18.5 3.5 16.5 3.5c-1.6 0-2.5 1-4.5 1s-2.9-1-4.5-1Z"/></svg>' },
+    { name:"안과",     id:"", icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-6.5 10-6.5S22 12 22 12s-3.5 6.5-10 6.5S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>' },
+    { name:"피부과",   id:"", icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3.5c-2.5 0-3.8 1.7-5 3.5-1.2-1.8-2.5-3.5-5-3.5C4.4 3.5 3 5.6 3 8c0 4 4.5 7.7 9 11 4.5-3.3 9-7 9-11 0-2.4-1.4-4.5-4-4.5Z"/><circle cx="9" cy="9" r=".6"/><circle cx="14" cy="11" r=".6"/><circle cx="11" cy="13" r=".6"/></svg>' },
+    { name:"성형외과", id:"", icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21c-.5-2-2-2.5-2-5 0-1-1-1.3-1-2.6C5 8 8.4 4.5 13 4.5c3.6 0 6 2.4 6 5.6 0 3.4-2.4 4.6-4 5.4-1.2.6-1.4 1.3-1.5 2.5"/><path d="m3.5 8.5 1.2.6M4 4.7l.9 1M8 2.6l.4 1.2"/></svg>' },
+    { name:"건강검진", id:"", icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3v5a5 5 0 0 0 10 0V3"/><path d="M10 13v3a4 4 0 0 0 8 0v-2"/><circle cx="18" cy="12" r="2"/></svg>' },
+    { name:"다이어트", id:"", icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M12 4v3"/><path d="M8 4v2M16 4v2"/><path d="m9 14 3-4 3 4"/></svg>' },
+    { name:"비뇨기과", id:"", icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="15" r="5"/><path d="m14 10 6-6"/><path d="M15 4h5v5"/></svg>' },
+    { name:"정형외과", id:"", icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8 5.5 5.5a2.1 2.1 0 1 0-1.9 1.9L6 10m10 4 2.4 2.5a2.1 2.1 0 1 0 1.9 1.9L18 16"/><path d="m8 8 8 8"/><path d="M8 8 5.6 10.4M16 16l2.4-2.4"/></svg>' },
+    { name:"내과",     id:"", icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 0 2 2h1v4.5a4.5 4.5 0 0 1-9 0V11"/><path d="M8 3H6M8 3h2"/><path d="M11 12h3a3 3 0 0 1 3 3v1a3 3 0 0 0 3 3"/><circle cx="20" cy="21" r="1"/></svg>' },
+    { name:"한의원",   id:"", icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 10h14l-1.2 7.2A3 3 0 0 1 14.8 20H9.2a3 3 0 0 1-3-2.8L5 10Z"/><path d="M4 10h16"/><path d="M12 4v3M12 4h-1.5M12 4h1.5"/><path d="M12 13v3M10.5 14.5h3"/></svg>' },
+    { name:"뷰티",     id:"", icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14c3-4 6-5 9-5s6 1 9 5"/><path d="m4 12-1 2.5M8 10.5 7.5 13M12 9.7v2.6M16 10.5l.5 2.5M20 12l1 2.5"/></svg>' },
+    { name:"예방접종", id:"", icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m18 2 4 4M17 3l4 4M20 4 9 15l-4 1-1 4-1-1 4-1 1-4L19 3"/><path d="m10 8 6 6M8 10l6 6"/></svg>' }
+  ];
+
+  function deptSearchUrl(dept){
+    var p = new URLSearchParams();
+    if(dept.id) p.set('departmentId', dept.id);
+    p.set('departmentName', dept.name);
+    p.set('mode','filter');
+    p.set('tab','program');
+    return 'https://safedoc.io/hospital/search/keyword?' + p.toString();
+  }
+
+  var selectedDept = null;
+
+  /* ── Prize segments (8칸, 포인터 기준 상단 12시) — 룰렛 내용은 추후 확정 ─── */
+  var SEGMENTS = [
+    { label:"검진 30%", name:"종합 건강검진 30% 할인 쿠폰", emoji:"🏆", win:true,  weight:5 },
+    { label:"5,000원",  name:"복지몰 5,000원 적립금",       emoji:"💙", win:true,  weight:14 },
+    { label:"꽝",       name:"아쉽지만 다음 기회에!",        emoji:"😢", win:false, weight:13 },
+    { label:"복지 2만", name:"복지몰 20,000원 적립금",       emoji:"🎁", win:true,  weight:15 },
+    { label:"스벅",     name:"스타벅스 아메리카노 기프티콘", emoji:"☕", win:true,  weight:12 },
+    { label:"꽝",       name:"아쉽지만 다음 기회에!",        emoji:"😢", win:false, weight:14 },
+    { label:"검진 10%", name:"건강검진 10% 할인 쿠폰",       emoji:"🩺", win:true,  weight:12 },
+    { label:"편의점",   name:"편의점 3,000원 상품권",        emoji:"🏪", win:true,  weight:15 }
+  ];
+  var N = SEGMENTS.length, SEG = 360 / N;
+
+  /* ── Build wheel SVG (premium radial gradients) ─────────────── */
+  var wheel = document.getElementById("wheel");
+  var cx=100, cy=100, r=100;
+  function pt(a){ var rad=(a-90)*Math.PI/180; return [cx+r*Math.cos(rad), cy+r*Math.sin(rad)]; }
+  var svg='<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">';
+  svg+='<defs>'
+     + '<radialGradient id="segBlue" cx="50%" cy="30%" r="85%"><stop offset="0%" stop-color="#3B78FF"/><stop offset="60%" stop-color="#1B59FA"/><stop offset="100%" stop-color="#0A2BD0"/></radialGradient>'
+     + '<radialGradient id="segSoft" cx="50%" cy="30%" r="85%"><stop offset="0%" stop-color="#FFFFFF"/><stop offset="100%" stop-color="#E4ECFF"/></radialGradient>'
+     + '<radialGradient id="segMuteA" cx="50%" cy="30%" r="85%"><stop offset="0%" stop-color="#828EA8"/><stop offset="100%" stop-color="#5C6884"/></radialGradient>'
+     + '<radialGradient id="segMuteB" cx="50%" cy="30%" r="85%"><stop offset="0%" stop-color="#F0F2F7"/><stop offset="100%" stop-color="#DFE3EC"/></radialGradient>'
+     + '</defs>';
+  for(var i=0;i<N;i++){
+    var a0=i*SEG, a1=(i+1)*SEG;
+    var p0=pt(a0), p1=pt(a1);
+    var fill;
+    if(!SEGMENTS[i].win){ fill = (i%2===0) ? "url(#segMuteA)" : "url(#segMuteB)"; }
+    else { fill = (i%2===0) ? "url(#segBlue)" : "url(#segSoft)"; }
+    svg+='<path d="M'+cx+','+cy+' L'+p0[0].toFixed(2)+','+p0[1].toFixed(2)+' A'+r+','+r+' 0 0 1 '+p1[0].toFixed(2)+','+p1[1].toFixed(2)+' Z" fill="'+fill+'" stroke="rgba(255,255,255,.55)" stroke-width="0.6"/>';
+    var mid=a0+SEG/2, lr=64, lrad=(mid-90)*Math.PI/180;
+    var lx=cx+lr*Math.cos(lrad), ly=cy+lr*Math.sin(lrad);
+    var light = (i%2===0);
+    var tcol = SEGMENTS[i].win ? (light?"#fff":"#0F3FCC") : (light?"#fff":"#6A7896");
+    svg+='<g transform="translate('+lx.toFixed(1)+','+ly.toFixed(1)+') rotate('+mid+')">';
+    svg+='<text class="wheel-seg-label" text-anchor="middle" fill="'+tcol+'" dy="-2">'+SEGMENTS[i].emoji+'</text>';
+    svg+='<text class="wheel-seg-label" text-anchor="middle" fill="'+tcol+'" dy="9">'+SEGMENTS[i].label+'</text>';
+    svg+='</g>';
+  }
+  svg+='<circle cx="100" cy="100" r="99" fill="none" stroke="rgba(154,119,38,.45)" stroke-width="1"/>';
+  svg+='</svg>';
+  wheel.innerHTML=svg;
+
+  /* ── Department picker ─────────────── */
+  var picker = document.getElementById("picker");
+  var deptGrid = document.getElementById("deptGrid");
+  var deptChip = document.getElementById("deptChip");
+  var hub = document.getElementById("hub");
+  var spinHint = document.getElementById("spinHint");
+
+  DEPTS.forEach(function(d, i){
+    var t = document.createElement("button");
+    t.type = "button";
+    t.className = "dept-tile";
+    t.dataset.idx = i;
+    t.innerHTML = '<span class="ic">'+d.icon+'</span><span class="nm">'+d.name+'</span>';
+    t.addEventListener("click", function(){ chooseDept(i); });
+    deptGrid.appendChild(t);
+  });
+
+  function openPicker(){ picker.classList.add("on"); }
+  function closePicker(){ picker.classList.remove("on"); }
+
+  function chooseDept(i){
+    selectedDept = DEPTS[i];
+    // chip
+    document.getElementById("deptChipIc").innerHTML = selectedDept.icon;
+    document.getElementById("deptChipName").textContent = selectedDept.name;
+    deptChip.hidden = false;
+    // hub / hint
+    hub.classList.remove("disabled");
+    hub.innerHTML = 'START<small>돌리기</small>';
+    spinHint.innerHTML = '가운데 <b>START</b> 버튼을 눌러 룰렛을 돌려보세요';
+    // highlight tile
+    Array.prototype.forEach.call(deptGrid.children, function(el, idx){
+      el.classList.toggle("sel", idx===i);
+    });
+    setTimeout(closePicker, 180);
+  }
+
+  document.getElementById("deptChange").addEventListener("click", openPicker);
+  picker.addEventListener("click", function(e){ if(e.target===picker && selectedDept) closePicker(); });
+
+  /* ── Weighted pick ─────────────── */
+  function pick(){
+    var total=SEGMENTS.reduce(function(s,x){return s+x.weight;},0);
+    var rnd=Math.random()*total, acc=0;
+    for(var i=0;i<N;i++){ acc+=SEGMENTS[i].weight; if(rnd<acc) return i; }
+    return N-1;
+  }
+
+  /* ── Spin ─────────────── */
+  var spinning=false, rotation=0, hasSpun=false;
+  function spin(){
+    if(!selectedDept){ openPicker(); return; }
+    if(spinning || hasSpun) return;
+    spinning=true; hub.classList.add("disabled"); hub.innerHTML='도는 중...';
+    var idx=pick();
+    var segCenter = idx*SEG + SEG/2;
+    var turns = 6;
+    var target = turns*360 + (360 - segCenter);
+    rotation += target;
+    wheel.style.transform="rotate("+rotation+"deg)";
+    setTimeout(function(){
+      spinning=false; hasSpun=true;
+      hub.innerHTML='완료';
+      showResult(SEGMENTS[idx]);
+    }, 5500);
+  }
+  hub.addEventListener("click", spin);
+  hub.addEventListener("keydown", function(e){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); spin(); }});
+
+  /* ── Result modal ─────────────── */
+  var overlay=document.getElementById("overlay");
+  var mDept=document.getElementById("mDept");
+  var mClaim=document.getElementById("mClaim");
+  function showResult(seg){
+    document.getElementById("mEmoji").textContent=seg.emoji;
+    if(seg.win){
+      document.getElementById("mTitle").textContent="축하합니다! 🎉";
+      document.getElementById("mPrize").style.display="";
+      document.getElementById("mPrize").textContent=seg.name;
+      document.getElementById("mDesc").textContent="혜택은 입력하신 연락처로 안내드려요. 지금 관심 진료과의 제휴 병원을 지역별로 바로 확인해보세요.";
+      // department deep-link
+      document.getElementById("mDeptIc").innerHTML = selectedDept.icon;
+      document.getElementById("mDeptName").textContent = selectedDept.name;
+      mDept.hidden = false;
+      mClaim.textContent = selectedDept.name + " 제휴 병원 보러가기";
+      mClaim.setAttribute("href", deptSearchUrl(selectedDept));
+      mClaim.setAttribute("target", "_blank");
+      confetti();
+    } else {
+      document.getElementById("mTitle").textContent="아쉬워요 😢";
+      document.getElementById("mPrize").style.display="none";
+      mDept.hidden = true;
+      document.getElementById("mDesc").textContent=seg.name+" 내일 다시 도전하면 또 기회가 있어요! 그동안 "+selectedDept.name+" 제휴 병원도 둘러보세요.";
+      mClaim.textContent = selectedDept.name + " 제휴 병원 보러가기";
+      mClaim.setAttribute("href", deptSearchUrl(selectedDept));
+      mClaim.setAttribute("target", "_blank");
+    }
+    overlay.classList.add("on");
+  }
+  document.getElementById("mClose").addEventListener("click", function(){ overlay.classList.remove("on"); });
+  overlay.addEventListener("click", function(e){ if(e.target===overlay) overlay.classList.remove("on"); });
+
+  /* ── Form ─────────────── */
+  var phone=document.getElementById("phone");
+  phone.addEventListener("input", function(){
+    var v=this.value.replace(/\D/g,"").slice(0,11);
+    if(v.length>7) v=v.replace(/(\d{3})(\d{4})(\d+)/,"$1-$2-$3");
+    else if(v.length>3) v=v.replace(/(\d{3})(\d+)/,"$1-$2");
+    this.value=v;
+  });
+  document.getElementById("form").addEventListener("submit", function(e){
+    e.preventDefault();
+    var name=document.getElementById("name").value.trim();
+    var ph=phone.value.trim();
+    var agree=document.getElementById("agree").checked;
+    if(!name){ document.getElementById("name").focus(); return alert("이름을 입력해주세요."); }
+    if(ph.replace(/\D/g,"").length<10){ phone.focus(); return alert("휴대폰 번호를 정확히 입력해주세요."); }
+    if(!agree){ return alert("개인정보 수집·이용에 동의해주세요."); }
+    if(!selectedDept){ openPicker(); return; }
+    if(!hasSpun){
+      document.querySelector(".wheel-sec").scrollIntoView({behavior:"smooth"});
+      setTimeout(spin, 500);
+    } else {
+      alert("응모가 완료되었습니다! (데모)");
+    }
+  });
+
+  /* ── Countdown (7일 뒤 자정 기준) ─────────────── */
+  var end=new Date(); end.setDate(end.getDate()+7); end.setHours(23,59,59,0);
+  function pad(n){ return String(n).padStart(2,"0"); }
+  function tick(){
+    var diff=end - new Date();
+    if(diff<0) diff=0;
+    var d=Math.floor(diff/86400000);
+    var h=Math.floor(diff%86400000/3600000);
+    var m=Math.floor(diff%3600000/60000);
+    var s=Math.floor(diff%60000/1000);
+    document.getElementById("cd-d").textContent=pad(d);
+    document.getElementById("cd-h").textContent=pad(h);
+    document.getElementById("cd-m").textContent=pad(m);
+    document.getElementById("cd-s").textContent=pad(s);
+  }
+  tick(); setInterval(tick,1000);
+
+  /* ── Confetti (gold + brand) ─────────────── */
+  var cv=document.getElementById("confetti"), ctx=cv.getContext("2d"), parts=[];
+  function resize(){ cv.width=innerWidth; cv.height=innerHeight; }
+  resize(); addEventListener("resize", resize);
+  function confetti(){
+    var cols=["#1B59FA","#2F72FF","#F3D98B","#C9A24B","#0A2BD0","#EAF0FF"];
+    parts=[];
+    for(var i=0;i<140;i++){
+      parts.push({ x:innerWidth/2, y:innerHeight/2, vx:(Math.random()-.5)*15, vy:(Math.random()-.5)*15-4,
+        s:Math.random()*7+4, c:cols[i%cols.length], rot:Math.random()*360, vr:(Math.random()-.5)*20, life:1 });
+    }
+    run();
+  }
+  function run(){
+    ctx.clearRect(0,0,cv.width,cv.height);
+    var alive=false;
+    for(var i=0;i<parts.length;i++){
+      var p=parts[i]; if(p.life<=0) continue; alive=true;
+      p.x+=p.vx; p.y+=p.vy; p.vy+=.4; p.vx*=.99; p.rot+=p.vr; p.life-=.011;
+      ctx.save(); ctx.globalAlpha=Math.max(0,p.life); ctx.translate(p.x,p.y); ctx.rotate(p.rot*Math.PI/180);
+      ctx.fillStyle=p.c; ctx.fillRect(-p.s/2,-p.s/2,p.s,p.s*.6); ctx.restore();
+    }
+    if(alive) requestAnimationFrame(run); else ctx.clearRect(0,0,cv.width,cv.height);
+  }
+
+  /* ── Init: 진료과 선택 팝업 먼저 노출 ─────────────── */
+  hub.classList.add("disabled");
+  setTimeout(openPicker, 450);
+})();
+</script>
+</body>
+</html>
