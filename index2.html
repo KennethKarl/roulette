@@ -47,14 +47,7 @@
     backdrop-filter:saturate(180%) blur(16px); -webkit-backdrop-filter:saturate(180%) blur(16px);
     border-bottom:1px solid rgba(10,18,38,.06);
   }
-  .logo{display:flex; align-items:center; gap:8px; font-weight:800; font-size:16px; letter-spacing:-.03em}
-  .logo .mark{
-    width:24px; height:24px; border-radius:8px; background:var(--grad);
-    display:grid; place-items:center; color:#fff; font-size:12px; font-weight:900;
-    box-shadow:0 3px 10px rgba(27,89,250,.42), inset 0 1px 0 rgba(255,255,255,.35);
-  }
-  .logo .brand{color:var(--ink)}
-  .logo .brand b{color:var(--blue)}
+  .logo-img{height:20px; width:auto; display:block}
   .topbar .badge{
     margin-left:auto; font-size:10.5px; font-weight:800; letter-spacing:.14em; color:var(--gold-dk);
     background:linear-gradient(135deg,#FBF3DC,#F1E0B0); border:1px solid #EAD79E;
@@ -80,13 +73,6 @@
   @keyframes float1{0%,100%{transform:translate(0,0)}50%{transform:translate(-14px,16px)}}
   @keyframes float2{0%,100%{transform:translate(0,0)}50%{transform:translate(12px,-14px)}}
   .hero-inner{position:relative; z-index:1}
-  .eyebrow{
-    display:inline-flex; align-items:center; gap:7px; font-size:11.5px; font-weight:700; letter-spacing:.02em;
-    background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.20);
-    color:#EAF0FF; padding:6px 14px; border-radius:999px; margin-bottom:16px;
-    backdrop-filter:blur(6px);
-  }
-  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--gold-lt);box-shadow:0 0 10px var(--gold-lt)}
   .hero h1{margin:0 0 10px; font-size:27px; line-height:1.3; font-weight:800; letter-spacing:-.035em}
   .hero h1 .hl{
     background:var(--gold-grad); -webkit-background-clip:text; background-clip:text; color:transparent;
@@ -221,8 +207,7 @@
 
   /* ── Footer ─────────────────────────────── */
   footer{background:var(--navy); color:#fff; padding:30px 22px 38px}
-  footer .flogo{display:flex; align-items:center; gap:8px; font-weight:800; font-size:15px; margin-bottom:14px; letter-spacing:-.02em}
-  footer .flogo .mark{width:22px;height:22px;border-radius:7px;background:var(--grad);display:grid;place-items:center;font-size:11px;font-weight:900;box-shadow:inset 0 1px 0 rgba(255,255,255,.3)}
+  footer .flogo-img{height:19px; width:auto; display:block; margin-bottom:14px}
   footer p{margin:2px 0; font-size:11px; color:rgba(255,255,255,.55); line-height:1.75}
   footer .fnav{display:flex; gap:16px; margin:16px 0 14px; flex-wrap:wrap}
   footer .fnav a{font-size:12px; color:rgba(255,255,255,.82); text-decoration:none; font-weight:600}
@@ -319,14 +304,13 @@
 
   <!-- Top bar -->
   <div class="topbar">
-    <div class="logo"><span class="mark">S</span><span class="brand">Safe<b>doc</b></span></div>
+    <img class="logo-img" src="logo.svg" alt="SAFE DOC" />
     <span class="badge">Event</span>
   </div>
 
   <!-- Hero -->
   <section class="hero">
     <div class="hero-inner">
-      <span class="eyebrow"><span class="dot"></span>회원 전용 · 하루 한 번</span>
       <h1>돌리면 나온다!<br><span class="hl">건강검진·복지</span> 혜택 룰렛</h1>
       <p>관심 진료과를 고르고 룰렛을 돌려서<br>검진 할인·복지 혜택과 병원까지 한 번에!</p>
       <div class="countdown" id="countdown" aria-label="이벤트 종료까지 남은 시간">
@@ -371,7 +355,7 @@
 
   <!-- Footer -->
   <footer>
-    <div class="flogo"><span class="mark">S</span> Safedoc</div>
+    <img class="flogo-img" src="logo.svg" alt="SAFE DOC" />
     <p>건강검진부터 복지 혜택까지, 믿을 수 있는 의료 파트너</p>
     <div class="fnav">
       <a href="#">이용약관</a><a href="#">개인정보처리방침</a><a href="#">고객센터</a>
