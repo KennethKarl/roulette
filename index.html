@@ -110,7 +110,7 @@
     z-index:2;
   }
   .wheel svg{width:100%; height:100%; display:block}
-  .wheel-seg-label{font-size:9.5px; font-weight:800; letter-spacing:-.02em}
+  .wheel-seg-label{font-size:12px; font-weight:800; letter-spacing:-.02em}
   .hub{
     position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
     width:66px; height:66px; border-radius:50%; z-index:5;
@@ -136,41 +136,7 @@
   .spin-hint{margin-top:16px; font-size:12.5px; color:var(--mute); font-weight:600}
   .spin-hint b{color:var(--blue)}
 
-  /* ── Prize tiers ─────────────────────────────── */
-  .section{padding:24px 22px}
-  .sec-title{font-size:18px; font-weight:800; letter-spacing:-.02em; margin:0 0 4px}
-  .sec-sub{font-size:12.5px; color:var(--mute); margin:0 0 16px}
-  .tier{
-    display:flex; align-items:center; gap:12px; padding:13px 14px; border-radius:14px;
-    border:1px solid var(--line); background:#fff; margin-bottom:10px; box-shadow:var(--shadow-card);
-  }
-  .tier .rank{
-    flex:none; width:40px; height:40px; border-radius:11px; display:grid; place-items:center;
-    font-weight:900; font-size:15px; color:#fff;
-  }
-  .tier.t1 .rank{background:linear-gradient(135deg,#E8A317,#F6C453)}
-  .tier.t2 .rank{background:linear-gradient(135deg,#6A7896,#A6B0BE)}
-  .tier.t3 .rank{background:linear-gradient(135deg,#B06A2E,#D69557)}
-  .tier .info{flex:1; min-width:0}
-  .tier .info .name{font-size:14.5px; font-weight:700; letter-spacing:-.01em}
-  .tier .info .desc{font-size:12px; color:var(--mute); margin-top:1px}
-  .tier .odds{flex:none; font-size:11px; font-weight:700; color:var(--blue); background:var(--blue-soft); padding:5px 9px; border-radius:999px}
-
-  /* ── Form / participate ─────────────────────────────── */
-  .form-sec{background:var(--mist); border-top:1px solid var(--line)}
-  .card{background:#fff; border:1px solid var(--line); border-radius:16px; padding:20px 18px; box-shadow:var(--shadow-card)}
-  .field{margin-bottom:14px}
-  .field label{display:block; font-size:12.5px; font-weight:700; color:var(--ink-soft); margin-bottom:6px}
-  .field input{
-    width:100%; padding:13px 14px; border:1px solid var(--edge); border-radius:var(--radius);
-    font-family:var(--font); font-size:14.5px; color:var(--ink); background:#fff;
-  }
-  .field input::placeholder{color:var(--faint)}
-  .field input:focus{outline:none; border-color:var(--blue); box-shadow:0 0 0 3px rgba(27,89,250,.14)}
-  .consent{display:flex; align-items:flex-start; gap:9px; padding:12px 13px; background:var(--mist); border-radius:10px; margin-bottom:16px}
-  .consent input{margin-top:2px; width:17px; height:17px; accent-color:var(--blue); flex:none}
-  .consent label{font-size:12px; color:var(--ink-soft); line-height:1.5}
-  .consent a{color:var(--blue); text-decoration:underline; font-weight:600}
+  /* ── Buttons ─────────────────────────────── */
   .btn-primary{
     width:100%; padding:15px; border:none; border-radius:var(--radius); cursor:pointer;
     background:var(--grad); color:#fff; font-family:var(--font); font-weight:800; font-size:15.5px;
@@ -180,9 +146,6 @@
   }
   .btn-primary:active{transform:translateY(1px) scale(.995)}
   .btn-primary:disabled{background:var(--faint); box-shadow:none; cursor:not-allowed}
-  .trust{display:flex; justify-content:center; gap:16px; margin-top:14px; flex-wrap:wrap}
-  .trust span{font-size:11px; color:var(--mute); display:inline-flex; align-items:center; gap:5px; font-weight:600}
-  .trust svg{width:13px;height:13px; color:var(--success)}
 
   /* ── Notice ─────────────────────────────── */
   .notice{padding:22px; background:#fff}
@@ -314,52 +277,6 @@
     <div class="spin-hint" id="spinHint">먼저 <b>관심 진료과</b>를 선택해주세요</div>
   </section>
 
-  <!-- Prize tiers -->
-  <section class="section">
-    <h2 class="sec-title">🎁 이번 주 경품</h2>
-    <p class="sec-sub">룰렛 8칸 중 어디에 멈추느냐에 따라 혜택이 달라져요.</p>
-    <div class="tier t1">
-      <div class="rank">1등</div>
-      <div class="info"><div class="name">종합 건강검진 30% 할인 쿠폰</div><div class="desc">제휴 병원 전 검진 프로그램 적용</div></div>
-      <div class="odds">5%</div>
-    </div>
-    <div class="tier t2">
-      <div class="rank">2등</div>
-      <div class="info"><div class="name">복지몰 20,000원 적립금</div><div class="desc">세이프닥 복지몰 즉시 사용 가능</div></div>
-      <div class="odds">15%</div>
-    </div>
-    <div class="tier t3">
-      <div class="rank">3등</div>
-      <div class="info"><div class="name">스타벅스 아메리카노 · 편의점 상품권</div><div class="desc">건강검진 10% 쿠폰 / 5,000원 적립금 등</div></div>
-      <div class="odds">50%</div>
-    </div>
-  </section>
-
-  <!-- Participate form -->
-  <section class="section form-sec">
-    <h2 class="sec-title">응모하고 결과 받기</h2>
-    <p class="sec-sub">당첨 혜택은 아래 연락처로 안내드려요. 회원 인증 후 자동 지급됩니다.</p>
-    <form class="card" id="form" novalidate>
-      <div class="field">
-        <label for="name">이름</label>
-        <input id="name" type="text" placeholder="홍길동" autocomplete="name" />
-      </div>
-      <div class="field">
-        <label for="phone">휴대폰 번호</label>
-        <input id="phone" type="tel" inputmode="numeric" placeholder="010-0000-0000" autocomplete="tel" />
-      </div>
-      <div class="consent">
-        <input id="agree" type="checkbox" />
-        <label for="agree"><b>[필수]</b> 개인정보 수집·이용 및 이벤트 안내 수신에 동의합니다. <a href="#notice">약관 보기</a></label>
-      </div>
-      <button type="submit" class="btn-primary" id="submitBtn">응모하고 룰렛 돌리기</button>
-      <div class="trust">
-        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>안전한 개인정보 보호</span>
-        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>당첨 즉시 자동 지급</span>
-      </div>
-    </form>
-  </section>
-
   <!-- Notice -->
   <section class="notice" id="notice">
     <h3>유의사항</h3>
@@ -450,16 +367,12 @@
 
   var selectedDept = null;
 
-  /* ── Prize segments (8칸, 포인터 기준 상단 12시) — 룰렛 내용은 추후 확정 ─── */
+  /* ── Prize segments (4칸, 포인터 기준 상단 12시) ─── */
   var SEGMENTS = [
-    { label:"검진 30%", name:"종합 건강검진 30% 할인 쿠폰", emoji:"🏆", win:true,  weight:5 },
-    { label:"5,000원",  name:"복지몰 5,000원 적립금",       emoji:"💙", win:true,  weight:14 },
-    { label:"꽝",       name:"아쉽지만 다음 기회에!",        emoji:"😢", win:false, weight:13 },
-    { label:"복지 2만", name:"복지몰 20,000원 적립금",       emoji:"🎁", win:true,  weight:15 },
-    { label:"스벅",     name:"스타벅스 아메리카노 기프티콘", emoji:"☕", win:true,  weight:12 },
-    { label:"꽝",       name:"아쉽지만 다음 기회에!",        emoji:"😢", win:false, weight:14 },
-    { label:"검진 10%", name:"건강검진 10% 할인 쿠폰",       emoji:"🩺", win:true,  weight:12 },
-    { label:"편의점",   name:"편의점 3,000원 상품권",        emoji:"🏪", win:true,  weight:15 }
+    { label:"쿠폰팩1", name:"쿠폰팩1", emoji:"🎟️", win:true, weight:25 },
+    { label:"쿠폰팩2", name:"쿠폰팩2", emoji:"🎟️", win:true, weight:25 },
+    { label:"쿠폰팩3", name:"쿠폰팩3", emoji:"🎟️", win:true, weight:25 },
+    { label:"쿠폰팩4", name:"쿠폰팩4", emoji:"🎟️", win:true, weight:25 }
   ];
   var N = SEGMENTS.length, SEG = 360 / N;
 
@@ -478,7 +391,9 @@
     var lx=cx+lr*Math.cos(lrad), ly=cy+lr*Math.sin(lrad);
     var light = (i%2===0);
     var tcol = SEGMENTS[i].win ? (light?"#fff":"#0F3FCC") : (light?"#fff":"#6A7896");
-    svg+='<g transform="translate('+lx.toFixed(1)+','+ly.toFixed(1)+') rotate('+mid+')">';
+    // 아래쪽 세그먼트는 180° 뒤집어 라벨이 항상 정방향으로 읽히게
+    var lrot = (mid>90 && mid<270) ? mid+180 : mid;
+    svg+='<g transform="translate('+lx.toFixed(1)+','+ly.toFixed(1)+') rotate('+lrot+')">';
     svg+='<text class="wheel-seg-label" text-anchor="middle" fill="'+tcol+'" dy="-2">'+SEGMENTS[i].emoji+'</text>';
     svg+='<text class="wheel-seg-label" text-anchor="middle" fill="'+tcol+'" dy="9">'+SEGMENTS[i].label+'</text>';
     svg+='</g>';
@@ -563,7 +478,7 @@
       document.getElementById("mTitle").textContent="축하합니다! 🎉";
       document.getElementById("mPrize").style.display="";
       document.getElementById("mPrize").textContent=seg.name;
-      document.getElementById("mDesc").textContent="혜택은 입력하신 연락처로 안내드려요. 지금 관심 진료과의 제휴 병원을 지역별로 바로 확인해보세요.";
+      document.getElementById("mDesc").textContent="쿠폰팩이 발급되었어요. 지금 관심 진료과의 제휴 병원을 지역별로 바로 확인해보세요.";
       document.getElementById("mDeptIc").innerHTML = selectedDept.icon;
       document.getElementById("mDeptName").textContent = selectedDept.name;
       mDept.hidden = false;
@@ -582,31 +497,6 @@
   }
   document.getElementById("mClose").addEventListener("click", function(){ overlay.classList.remove("on"); });
   overlay.addEventListener("click", function(e){ if(e.target===overlay) overlay.classList.remove("on"); });
-
-  /* ── Form ─────────────── */
-  var phone=document.getElementById("phone");
-  phone.addEventListener("input", function(){
-    var v=this.value.replace(/\D/g,"").slice(0,11);
-    if(v.length>7) v=v.replace(/(\d{3})(\d{4})(\d+)/,"$1-$2-$3");
-    else if(v.length>3) v=v.replace(/(\d{3})(\d+)/,"$1-$2");
-    this.value=v;
-  });
-  document.getElementById("form").addEventListener("submit", function(e){
-    e.preventDefault();
-    var name=document.getElementById("name").value.trim();
-    var ph=phone.value.trim();
-    var agree=document.getElementById("agree").checked;
-    if(!name){ document.getElementById("name").focus(); return alert("이름을 입력해주세요."); }
-    if(ph.replace(/\D/g,"").length<10){ phone.focus(); return alert("휴대폰 번호를 정확히 입력해주세요."); }
-    if(!agree){ return alert("개인정보 수집·이용에 동의해주세요."); }
-    if(!selectedDept){ openPicker(); return; }
-    if(!hasSpun){
-      document.querySelector(".wheel-sec").scrollIntoView({behavior:"smooth"});
-      setTimeout(spin, 500);
-    } else {
-      alert("응모가 완료되었습니다! (데모)");
-    }
-  });
 
   /* ── Countdown (7일 뒤 자정 기준) ─────────────── */
   var end=new Date(); end.setDate(end.getDate()+7); end.setHours(23,59,59,0);
