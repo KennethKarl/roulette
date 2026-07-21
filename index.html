@@ -159,6 +159,7 @@
   .modal{
     width:100%; max-width:340px; background:#fff; border-radius:20px; padding:28px 24px 22px;
     text-align:center; box-shadow:var(--shadow-pop); animation:pop .32s cubic-bezier(.2,.9,.25,1.3);
+    max-height:86vh; overflow-y:auto;
   }
   @keyframes pop{from{transform:scale(.86) translateY(10px); opacity:0}to{transform:none; opacity:1}}
   .modal .emoji{font-size:48px; line-height:1; margin-bottom:8px}
@@ -176,6 +177,21 @@
   .modal .m-dept .ic svg{width:20px;height:20px}
   .modal .m-dept b{color:var(--blue-dark); font-weight:800}
   .modal p{margin:0 0 18px; font-size:13px; color:var(--mute)}
+  .cpn-list{
+    list-style:none; margin:0 0 10px; padding:0; text-align:left;
+    border:1px solid var(--line); border-radius:12px; overflow:hidden;
+  }
+  .cpn-list li{
+    display:flex; align-items:center; gap:10px; padding:10px 13px;
+    border-bottom:1px solid var(--line); background:var(--mist);
+  }
+  .cpn-list li:first-child{background:var(--blue-soft)}
+  .cpn-list li:last-child{border-bottom:none}
+  .cpn-list .v{flex:none; min-width:76px; font-size:13.5px; font-weight:800; color:var(--blue-dark); letter-spacing:-.02em}
+  .cpn-list .c{font-size:11.5px; color:var(--mute); font-weight:600}
+  .cpn-exp{font-size:11.5px; color:var(--mute); margin:0 0 14px}
+  .cpn-exp b{color:var(--danger); font-weight:800}
+  .m-note{font-size:11px; color:var(--faint); margin:0 0 14px; line-height:1.6}
   .modal .btn-primary{margin-bottom:8px}
   .modal .btn-ghost{
     width:100%; padding:12px; border:none; background:none; cursor:pointer;
@@ -292,12 +308,19 @@
 <!-- Result modal -->
 <div class="overlay" id="overlay">
   <div class="modal">
-    <div class="emoji" id="mEmoji">🎉</div>
-    <h2 id="mTitle">축하합니다!</h2>
-    <div class="prize" id="mPrize">건강검진 30% 할인 쿠폰</div>
-    <div class="m-dept" id="mDept" hidden><span class="ic" id="mDeptIc"></span><span><b id="mDeptName">치과</b> 제휴 병원 바로 찾기</span></div>
-    <p id="mDesc">당첨 혜택은 입력하신 연락처로 안내드릴게요.</p>
-    <a class="btn-primary" id="mClaim" href="#" target="_blank" rel="noopener">혜택 받기</a>
+    <div class="emoji">🎉</div>
+    <h2>축하합니다!</h2>
+    <div class="prize">웰컴 쿠폰팩</div>
+    <ul class="cpn-list">
+      <li><span class="v">7% 할인</span><span class="c">최대 ₩10,000</span></li>
+      <li><span class="v">₩20,000</span><span class="c">40만원 이상 결제 시</span></li>
+      <li><span class="v">₩15,000</span><span class="c">15만원 이상 결제 시</span></li>
+      <li><span class="v">₩10,000</span><span class="c">10만원 이상 결제 시</span></li>
+    </ul>
+    <div class="cpn-exp">유효기간 <b>발급일로부터 7일</b></div>
+    <div class="m-dept" id="mDept"><span class="ic" id="mDeptIc"></span><span><b id="mDeptName">치과</b> 병원 바로 찾기</span></div>
+    <p class="m-note">복지몰 로그인 · 소속 인증을 완료하면 쿠폰팩이 지급됩니다.</p>
+    <a class="btn-primary" id="mClaim" href="#" target="_blank" rel="noopener">병원 보러 가기</a>
     <button class="btn-ghost" id="mClose">닫기</button>
   </div>
 </div>
@@ -447,7 +470,7 @@
     setTimeout(function(){
       spinning=false; hasSpun=true;
       hub.innerHTML='완료';
-      showResult(SEGMENTS[idx]);
+      showResult();
     }, 5100);
   }
   hub.addEventListener("click", spin);
@@ -455,30 +478,15 @@
 
   /* ── Result modal ─────────────── */
   var overlay=document.getElementById("overlay");
-  var mDept=document.getElementById("mDept");
   var mClaim=document.getElementById("mClaim");
-  function showResult(seg){
-    document.getElementById("mEmoji").textContent=seg.emoji;
-    if(seg.win){
-      document.getElementById("mTitle").textContent="축하합니다! 🎉";
-      document.getElementById("mPrize").style.display="";
-      document.getElementById("mPrize").textContent=seg.name;
-      document.getElementById("mDesc").textContent="쿠폰팩이 발급되었어요. 지금 관심 진료과의 제휴 병원을 지역별로 바로 확인해보세요.";
-      document.getElementById("mDeptIc").innerHTML = selectedDept.icon;
-      document.getElementById("mDeptName").textContent = selectedDept.name;
-      mDept.hidden = false;
-      mClaim.textContent = selectedDept.name + " 제휴 병원 보러가기";
-      mClaim.setAttribute("href", deptSearchUrl(selectedDept));
-      confetti();
-    } else {
-      document.getElementById("mTitle").textContent="아쉬워요 😢";
-      document.getElementById("mPrize").style.display="none";
-      mDept.hidden = true;
-      document.getElementById("mDesc").textContent=seg.name+" 내일 다시 도전하면 또 기회가 있어요! 그동안 "+selectedDept.name+" 제휴 병원도 둘러보세요.";
-      mClaim.textContent = selectedDept.name + " 제휴 병원 보러가기";
-      mClaim.setAttribute("href", deptSearchUrl(selectedDept));
-    }
+  // 쿠폰팩1~4는 전부 동일한 '웰컴 쿠폰팩' — 룰렛은 연출 장치
+  function showResult(){
+    document.getElementById("mDeptIc").innerHTML = selectedDept.icon;
+    document.getElementById("mDeptName").textContent = selectedDept.name;
+    mClaim.textContent = selectedDept.name + " 병원 보러 가기";
+    mClaim.setAttribute("href", deptSearchUrl(selectedDept));
     overlay.classList.add("on");
+    confetti();
   }
   document.getElementById("mClose").addEventListener("click", function(){ overlay.classList.remove("on"); });
   overlay.addEventListener("click", function(e){ if(e.target===overlay) overlay.classList.remove("on"); });
