@@ -98,6 +98,14 @@
   }
   .wheel svg{width:100%; height:100%; display:block}
   .wheel-seg-label{font-size:12px; font-weight:800; letter-spacing:-.02em}
+  .wheel-best-label{font-size:7px; font-weight:900; letter-spacing:.14em}
+  .best-note{
+    margin-top:14px; display:inline-flex; align-items:center; gap:5px;
+    padding:6px 13px; border-radius:999px;
+    background:var(--blue-soft); border:1px solid #D6E2FD; color:var(--blue-dark);
+    font-size:12px; font-weight:700; letter-spacing:-.01em;
+  }
+  .best-note b{color:var(--blue-dark); font-weight:800}
   .hub{
     position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
     width:66px; height:66px; border-radius:50%; z-index:5;
@@ -264,7 +272,7 @@
   <section class="hero">
     <div class="hero-inner">
       <h1>돌리면 나온다!<br><span class="hl">건강검진·복지</span> 혜택 룰렛</h1>
-      <p>관심 진료과를 고르고 룰렛을 돌려서<br>검진 할인·복지 혜택과 병원까지 한 번에!</p>
+      <p>관심 진료과를 고르고 룰렛을 돌려서<br>복지 혜택과 병원까지 한 번에!</p>
       <div class="countdown" id="countdown" aria-label="이벤트 종료까지 남은 시간">
         <div class="cd-cell"><div class="cd-num" id="cd-d">00</div><div class="cd-lab">DAYS</div></div>
         <div class="cd-cell"><div class="cd-num" id="cd-h">00</div><div class="cd-lab">HRS</div></div>
@@ -288,6 +296,7 @@
       <div class="wheel" id="wheel"></div>
       <div class="hub" id="hub" role="button" tabindex="0" aria-label="룰렛 돌리기">START<small>돌리기</small></div>
     </div>
+    <div class="best-note">🎁 <b>웰컴 쿠폰팩</b> · 가장 좋은 혜택</div>
     <div class="spin-hint" id="spinHint">먼저 <b>관심 진료과</b>를 선택해주세요</div>
   </section>
 
@@ -350,10 +359,10 @@
 <!-- Already issued modal -->
 <div class="overlay" id="overlayDone">
   <div class="modal">
-    <div class="emoji">🎫</div>
+    <div class="emoji">🎁</div>
     <h2>이미 발급되었어요</h2>
     <p class="m-note">룰렛 이벤트를 통하여 쿠폰팩이 이미 발급되었습니다.<br>쿠폰함에서 확인해주세요.</p>
-    <button class="btn-primary" id="mDoneClose" type="button">확인</button>
+    <a class="btn-primary" id="mDoneClose" href="https://safedoc.io/" target="_blank" rel="noopener">혜택 확인</a>
   </div>
 </div>
 
@@ -412,7 +421,7 @@
     { key:"pack1",   label:"3만원",     name:"쿠폰팩1",   emoji:"🎟️", win:true  },
     { key:"pack2",   label:"5만원",     name:"쿠폰팩2",   emoji:"🎟️", win:true  },
     { key:"pack3",   label:"1만원",     name:"쿠폰팩3",   emoji:"🎟️", win:true  },
-    { key:"welcome", label:"웰컴쿠폰팩", name:"웰컴 쿠폰팩", emoji:"🎁", win:true  },
+    { key:"welcome", label:"웰컴쿠폰팩", name:"웰컴 쿠폰팩", emoji:"🎁", win:true, best:true },
     { key:"miss",    label:"꽝",        name:"꽝",        emoji:"😢", win:false }
   ];
   var N = SEGMENTS.length, SEG = 360 / N;
@@ -437,8 +446,14 @@
     // 아래쪽 세그먼트는 180° 뒤집어 라벨이 항상 정방향으로 읽히게
     var lrot = (mid>90 && mid<270) ? mid+180 : mid;
     svg+='<g transform="translate('+lx.toFixed(1)+','+ly.toFixed(1)+') rotate('+lrot+')">';
-    svg+='<text class="wheel-seg-label" text-anchor="middle" fill="'+tcol+'" dy="-2">'+SEGMENTS[i].emoji+'</text>';
-    svg+='<text class="wheel-seg-label" text-anchor="middle" fill="'+tcol+'" dy="9">'+SEGMENTS[i].label+'</text>';
+    if(SEGMENTS[i].best){
+      svg+='<text class="wheel-best-label" text-anchor="middle" fill="'+tcol+'" dy="-13">BEST</text>';
+      svg+='<text class="wheel-seg-label" text-anchor="middle" fill="'+tcol+'" dy="0">'+SEGMENTS[i].emoji+'</text>';
+      svg+='<text class="wheel-seg-label" text-anchor="middle" fill="'+tcol+'" dy="11">'+SEGMENTS[i].label+'</text>';
+    }else{
+      svg+='<text class="wheel-seg-label" text-anchor="middle" fill="'+tcol+'" dy="-2">'+SEGMENTS[i].emoji+'</text>';
+      svg+='<text class="wheel-seg-label" text-anchor="middle" fill="'+tcol+'" dy="9">'+SEGMENTS[i].label+'</text>';
+    }
     svg+='</g>';
   }
   svg+='<circle cx="100" cy="100" r="99" fill="none" stroke="rgba(0,15,44,.08)" stroke-width="2"/>';
