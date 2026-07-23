@@ -99,6 +99,7 @@
   .wheel svg{width:100%; height:100%; display:block}
   .wheel-seg-label{font-size:12px; font-weight:800; letter-spacing:-.02em}
   .wheel-best-label{font-size:7px; font-weight:900; letter-spacing:.14em}
+  .wheel-amt-label{font-size:12px; font-weight:900; letter-spacing:-.03em}
   .best-note{
     margin-top:14px; display:inline-flex; align-items:center; gap:5px;
     padding:6px 13px; border-radius:999px;
@@ -465,9 +466,10 @@
     var lrot = (mid>90 && mid<270) ? mid+180 : mid;
     svg+='<g transform="translate('+lx.toFixed(1)+','+ly.toFixed(1)+') rotate('+lrot+')">';
     if(SEGMENTS[i].best){
-      svg+='<text class="wheel-best-label" text-anchor="middle" fill="'+tcol+'" dy="-13">BEST</text>';
-      svg+='<text class="wheel-seg-label" text-anchor="middle" fill="'+tcol+'" dy="0">'+SEGMENTS[i].emoji+'</text>';
-      svg+='<text class="wheel-seg-label" text-anchor="middle" fill="'+tcol+'" dy="11">'+SEGMENTS[i].label+'</text>';
+      svg+='<text class="wheel-best-label" text-anchor="middle" fill="'+tcol+'" dy="-18">BEST</text>';
+      svg+='<text class="wheel-seg-label" text-anchor="middle" fill="'+tcol+'" dy="-6">'+SEGMENTS[i].emoji+'</text>';
+      svg+='<text class="wheel-seg-label" text-anchor="middle" fill="'+tcol+'" dy="6">'+SEGMENTS[i].label+'</text>';
+      svg+='<text class="wheel-amt-label" text-anchor="middle" fill="#E8A317" dy="18">10만원</text>';
     }else{
       svg+='<text class="wheel-seg-label" text-anchor="middle" fill="'+tcol+'" dy="-2">'+SEGMENTS[i].emoji+'</text>';
       svg+='<text class="wheel-seg-label" text-anchor="middle" fill="'+tcol+'" dy="9">'+SEGMENTS[i].label+'</text>';
