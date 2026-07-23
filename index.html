@@ -525,12 +525,9 @@
   function markIssued(){ try{ localStorage.setItem(ISSUED_KEY, "1"); }catch(e){} }
 
   /* ── 당첨 결정 ───────────────
-     1차: 80% 웰컴쿠폰팩 / 20% 꽝
-     2차(재도전): 꽝 제외 → 웰컴쿠폰팩 확정 */
-  var WIN_RATE_FIRST = 0.8;
+     항상 웰컴쿠폰팩 100% 당첨 (꽝 없음) */
   function pick(round){
-    if(round >= 2) return IDX_WELCOME;
-    return (Math.random() < WIN_RATE_FIRST) ? IDX_WELCOME : IDX_MISS;
+    return IDX_WELCOME;
   }
 
   /* ── Spin ─────────────── */
