@@ -554,8 +554,8 @@
   function spinNearMiss(){
     var turns = 6;
     var base = rotation - (rotation % 360) + turns*360;
-    var rotA = base + 68;   // 포인터를 꽝 안쪽(경계 4°)에 세움 → "꽝?!"
-    var rotB = rotA + 8;    // 경계를 넘겨 웰컴 안쪽(꽝에 딱 붙은 4°)으로 창
+    var rotA = base + 68;     // 포인터를 꽝 안쪽(경계 4°)에 세움 → "꽝?!"
+    var rotB = rotA + 5.5;    // 경계를 겨우 넘겨 웰컴 '끝자락'(꽝 경계 1.5°)에 아슬아슬 안착
     rotation = rotB;
 
     var DECEL = 6600;       // ① 감속 길이 (길수록 긴장감 ↑)
