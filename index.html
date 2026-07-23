@@ -569,8 +569,6 @@
 
     setTimeout(function(){                 // 마지막 슬로우 크롤 진입 — 긴장 고조 (계속 도는 중)
       hub.innerHTML='두근두근…';
-      spinHint.classList.add("nail");
-      spinHint.innerHTML='어… 꽝 쪽으로…?';
       wheelWrap.classList.add("nail");
       pointerEl.classList.add("throb");
     }, DUR - 2600);
@@ -578,7 +576,6 @@
     setTimeout(function(){                  // 안착 — 당첨 처리
       wheelWrap.classList.remove("nail");
       pointerEl.classList.remove("throb");
-      spinHint.classList.remove("nail");
       finishWin();
     }, DUR + 200);
   }
