@@ -575,10 +575,6 @@
       pointerEl.classList.add("throb");
     }, DUR - 2600);
 
-    setTimeout(function(){                 // 꽝 경계를 아슬아슬 통과하는 중 — 최고조
-      spinHint.innerHTML='앗, <b>꽝</b>에 아슬아슬…!';
-    }, DUR - 1000);
-
     setTimeout(function(){                  // 안착 — 당첨 처리
       wheelWrap.classList.remove("nail");
       pointerEl.classList.remove("throb");
