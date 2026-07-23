@@ -580,7 +580,6 @@
     }, DECEL);
 
     setTimeout(function(){                  // ③ 천천히 한 칸 밀려 웰컴으로
-      spinHint.innerHTML='어어… 넘어간다…!';
       wheel.style.transition = "transform "+(CREEP/1000)+"s cubic-bezier(.36,.02,.22,1)";
       wheel.style.transform = "rotate("+rotB+"deg)";
     }, DECEL + HOLD);
