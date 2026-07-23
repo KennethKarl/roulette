@@ -586,6 +586,7 @@
     if(spinning || finished) return;
     spinning=true; attempt++;
     hub.classList.add("disabled"); hub.innerHTML='도는 중...';
+    spinHint.classList.remove("nail"); spinHint.innerHTML='';   // START 누르면 안내문 제거
     var idx=pick(attempt);
 
     // 웰컴 당첨이면 (첫 스핀이든 재도전이든) 항상 끝자락 아슬아슬 연출
