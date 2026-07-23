@@ -601,8 +601,8 @@
     hub.classList.add("disabled"); hub.innerHTML='도는 중...';
     var idx=pick(attempt);
 
-    // 꽝을 거친 뒤 웰컴 확정 스핀 → 아슬아슬 연출
-    if(idx===IDX_WELCOME && attempt>=2){ spinNearMiss(); return; }
+    // 웰컴 당첨이면 (첫 스핀이든 재도전이든) 항상 끝자락 아슬아슬 연출
+    if(idx===IDX_WELCOME){ spinNearMiss(); return; }
 
     var segCenter = idx*SEG + SEG/2;
     var turns = 5;
