@@ -276,22 +276,36 @@
   .dept-tile .nm{font-size:12px; font-weight:700; color:var(--ink-soft)}
   .dept-tile.sel .nm{color:var(--blue-dark)}
   .picker-note{text-align:center; font-size:11px; color:var(--faint); margin-top:12px}
+
+  /* ══ 디자이너 이미지 슬롯 핸드오프 ══════════════════════════
+     각 섹션은 assets/*.png 플레이스홀더로 렌더된다. 디자이너는 동일 파일명·비율로
+     이미지만 교체하면 된다. 카운트다운·룰렛 회전·버튼·모달은 이미지 위 라이브 오버레이로 유지.
+     상세 규격은 assets/SLOTS.md 참고. */
+  .slot{display:block; width:100%; height:auto}
+  .topbar{padding:0; border-bottom:none; background:#fff}
+  .hero{padding:0; background:none; overflow:hidden; position:relative}
+  .hero::before,.hero::after{display:none}
+  .hero-live{position:absolute; left:0; right:0; top:56%; z-index:2;
+    display:flex; flex-direction:column; align-items:center}
+  .hero-live .countdown{margin-top:0}
+  .wheel{box-shadow:none}
+  .notice{padding:0}
+  .notice-live{padding:4px 22px 22px}
+  footer{padding:0; background:none}
 </style>
 </head>
 <body>
 <div class="shell">
 
-  <!-- Top bar -->
+  <!-- Top bar [슬롯: assets/topbar.png] -->
   <div class="topbar">
-    <img class="logo-img" src="logo.svg" alt="SAFE DOC" />
-    <span class="badge">EVENT</span>
+    <img class="slot" src="assets/topbar.png" alt="SAFE DOC · EVENT" />
   </div>
 
-  <!-- Hero -->
+  <!-- Hero [슬롯: assets/hero.png · 카운트다운은 라이브 오버레이] -->
   <section class="hero">
-    <div class="hero-inner">
-      <h1>🚨 지금 받을 수 있는 <span class="hl">마지막 기회</span>!<br>룰렛 돌리고 시술할인 쿠폰 받기</h1>
-      <p>세이프닥 회원이라면 누구나!<br>즉시 사용 가능한 중복 할인 쿠폰 받아가세요.</p>
+    <img class="slot" src="assets/hero.png" alt="지금 받을 수 있는 마지막 기회! 룰렛 돌리고 시술할인 쿠폰 받기" />
+    <div class="hero-live">
       <div class="countdown" id="countdown" aria-label="이벤트 종료까지 남은 시간">
         <div class="cd-cell"><div class="cd-num" id="cd-d">00</div><div class="cd-lab">DAYS</div></div>
         <div class="cd-cell"><div class="cd-num" id="cd-h">00</div><div class="cd-lab">HRS</div></div>
@@ -312,33 +326,25 @@
     <div class="wheel-wrap">
       <div class="wheel-ring"></div>
       <div class="pointer"></div>
-      <div class="wheel" id="wheel"></div>
+      <div class="wheel" id="wheel"><img class="slot" src="assets/wheel.png" alt="룰렛 원판" /></div>
       <div class="hub" id="hub" role="button" tabindex="0" aria-label="룰렛 돌리기">START<small>돌리기</small></div>
     </div>
     <div class="best-note">🎁 <b>웰컴 쿠폰팩</b> · 가장 좋은 혜택</div>
     <div class="spin-hint" id="spinHint">먼저 <b>관심 진료과</b>를 선택해주세요</div>
   </section>
 
-  <!-- Notice -->
+  <!-- Notice [슬롯: assets/notice.png · 데모 초기화 버튼은 라이브] -->
   <section class="notice" id="notice">
-    <h3>유의사항</h3>
-    <ul>
-      <li>당첨된 쿠폰·적립금은 회원 인증 완료 후 마이페이지에 자동 지급됩니다.</li>
-    </ul>
-    <button class="demo-reset" id="demoReset" type="button">🔄 발급 이력 초기화</button>
-    <p class="demo-reset-note">샘플 화면 전용 · 저장된 쿠폰팩 발급 이력을 지우고 처음부터 다시 참여합니다</p>
+    <img class="slot" src="assets/notice.png" alt="유의사항 · 당첨된 쿠폰·적립금은 회원 인증 완료 후 마이페이지에 자동 지급됩니다" />
+    <div class="notice-live">
+      <button class="demo-reset" id="demoReset" type="button">🔄 발급 이력 초기화</button>
+      <p class="demo-reset-note">샘플 화면 전용 · 저장된 쿠폰팩 발급 이력을 지우고 처음부터 다시 참여합니다</p>
+    </div>
   </section>
 
-  <!-- Footer -->
+  <!-- Footer [슬롯: assets/footer.png] -->
   <footer>
-    <img class="flogo-img" src="logo.svg" alt="SAFE DOC" />
-    <p>건강검진부터 복지 혜택까지, 믿을 수 있는 의료 파트너</p>
-    <div class="fnav">
-      <a href="#">이용약관</a><a href="#">개인정보처리방침</a><a href="#">고객센터</a>
-    </div>
-    <p>주식회사 세이프닥 · 대표 000 · 사업자등록번호 000-00-00000</p>
-    <p>서울특별시 ○○구 ○○로 00, 00층</p>
-    <div class="copy">© 2026 Safedoc. All rights reserved. · 데모 페이지</div>
+    <img class="slot" src="assets/footer.png" alt="세이프닥 · 건강검진부터 복지 혜택까지" />
   </footer>
 
 </div>
@@ -448,38 +454,12 @@
   function idxOf(key){ for(var i=0;i<N;i++){ if(SEGMENTS[i].key===key) return i; } return 0; }
   var IDX_WELCOME = idxOf("welcome"), IDX_MISS = idxOf("miss");
 
-  /* ── Build wheel SVG ─────────────── */
+  /* ── Wheel ─────────────────────────
+     원판은 assets/wheel.png 이미지 슬롯(#wheel 안 <img>)이며, 회전은 이 요소에 적용.
+     ⚠ 디자이너 교체 시 세그먼트 배치를 반드시 유지: 상단 12시부터 시계방향 72°씩
+        [3만원 · 5만원 · 1만원 · 웰컴쿠폰팩 · 꽝]. 웰컴과 꽝이 인접해야 끝자락 near-miss가 성립.
+     (라벨 데이터는 SEGMENTS에 남겨 로직·핸드오프 기준으로 사용) */
   var wheel = document.getElementById("wheel");
-  var cx=100, cy=100, r=100;
-  function pt(a){ var rad=(a-90)*Math.PI/180; return [cx+r*Math.cos(rad), cy+r*Math.sin(rad)]; }
-  var svg='<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">';
-  for(var i=0;i<N;i++){
-    var a0=i*SEG, a1=(i+1)*SEG;
-    var p0=pt(a0), p1=pt(a1);
-    var fill = (i%2===0) ? "#1B59FA" : "#EAF0FF";
-    if(!SEGMENTS[i].win) fill = (i%2===0) ? "#6A7896" : "#E7EAF0";
-    svg+='<path d="M'+cx+','+cy+' L'+p0[0].toFixed(2)+','+p0[1].toFixed(2)+' A'+r+','+r+' 0 0 1 '+p1[0].toFixed(2)+','+p1[1].toFixed(2)+' Z" fill="'+fill+'"/>';
-    var mid=a0+SEG/2, lr=64, lrad=(mid-90)*Math.PI/180;
-    var lx=cx+lr*Math.cos(lrad), ly=cy+lr*Math.sin(lrad);
-    var light = (i%2===0);
-    var tcol = SEGMENTS[i].win ? (light?"#fff":"#0F3FCC") : (light?"#fff":"#6A7896");
-    // 아래쪽 세그먼트는 180° 뒤집어 라벨이 항상 정방향으로 읽히게
-    var lrot = (mid>90 && mid<270) ? mid+180 : mid;
-    svg+='<g transform="translate('+lx.toFixed(1)+','+ly.toFixed(1)+') rotate('+lrot+')">';
-    if(SEGMENTS[i].best){
-      svg+='<text class="wheel-best-label" text-anchor="middle" fill="'+tcol+'" dy="-18">BEST</text>';
-      svg+='<text class="wheel-seg-label" text-anchor="middle" fill="'+tcol+'" dy="-6">'+SEGMENTS[i].emoji+'</text>';
-      svg+='<text class="wheel-seg-label" text-anchor="middle" fill="'+tcol+'" dy="6">'+SEGMENTS[i].label+'</text>';
-      svg+='<text class="wheel-amt-label" text-anchor="middle" fill="#E8A317" dy="21">10만원</text>';
-    }else{
-      svg+='<text class="wheel-seg-label" text-anchor="middle" fill="'+tcol+'" dy="-2">'+SEGMENTS[i].emoji+'</text>';
-      svg+='<text class="wheel-seg-label" text-anchor="middle" fill="'+tcol+'" dy="9">'+SEGMENTS[i].label+'</text>';
-    }
-    svg+='</g>';
-  }
-  svg+='<circle cx="100" cy="100" r="99" fill="none" stroke="rgba(0,15,44,.08)" stroke-width="2"/>';
-  svg+='</svg>';
-  wheel.innerHTML=svg;
 
   /* ── Department picker ─────────────── */
   var picker = document.getElementById("picker");
