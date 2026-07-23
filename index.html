@@ -554,42 +554,34 @@
   function spinNearMiss(){
     var turns = 6;
     var base = rotation - (rotation % 360) + turns*360;
-    var rotA = base + 68;     // 포인터를 꽝 안쪽(경계 4°)에 세움 → "꽝?!"
-    var rotB = rotA + 5.5;    // 경계를 겨우 넘겨 웰컴 '끝자락'(꽝 경계 1.5°)에 아슬아슬 안착
+    var rotB = base + 73.5;   // 웰컴 '끝자락'(꽝 경계 1.5°)에 최종 안착
     rotation = rotB;
 
-    var DECEL = 6600;       // ① 감속 길이 (길수록 긴장감 ↑)
-    var CUE   = 1600;       // 정지 CUE 전, 마지막 슬로우 크롤에서 긴장 고조 시작
-    var HOLD  = 900;        // ② 꽝에 멈춘 채 멈칫
-    var CREEP = 1400;       // ③ 웰컴으로 천천히 창
+    var DUR = 7200;           // 감속~안착 총 시간
 
-    // ① 감속 — 꼬리를 길게 끌어 꽝 직전에서 아슬아슬하게 감속 정지
-    wheel.style.transition = "transform "+(DECEL/1000)+"s cubic-bezier(.07,.82,.09,1)";
-    wheel.style.transform = "rotate("+rotA+"deg)";
+    // 멈춤 없는 '한 번의' 연속 감속(롱테일 ease-out).
+    // 초반 빠르게 돌다가, 마지막 구간에서 꽝→웰컴 경계를 '안 멈추고' 아주 천천히 크롤해 넘어감.
+    wheel.style.transition = "transform "+(DUR/1000)+"s cubic-bezier(.17,.9,.22,1)";
+    wheel.style.transform = "rotate("+rotB+"deg)";
 
-    setTimeout(function(){                 // 마지막 크롤 중 긴장 고조 (아직 도는 중)
+    setTimeout(function(){                 // 마지막 슬로우 크롤 진입 — 긴장 고조 (계속 도는 중)
       hub.innerHTML='두근두근…';
       spinHint.classList.add("nail");
       spinHint.innerHTML='어… 꽝 쪽으로…?';
       wheelWrap.classList.add("nail");
       pointerEl.classList.add("throb");
-    }, DECEL - CUE);
+    }, DUR - 2600);
 
-    setTimeout(function(){                 // ② 꽝에 멈춘 순간 — 최고조
+    setTimeout(function(){                 // 꽝 경계를 아슬아슬 통과하는 중 — 최고조
       spinHint.innerHTML='앗, <b>꽝</b>에 아슬아슬…!';
-    }, DECEL);
+    }, DUR - 1000);
 
-    setTimeout(function(){                  // ③ 천천히 한 칸 밀려 웰컴으로
-      wheel.style.transition = "transform "+(CREEP/1000)+"s cubic-bezier(.36,.02,.22,1)";
-      wheel.style.transform = "rotate("+rotB+"deg)";
-    }, DECEL + HOLD);
-
-    setTimeout(function(){                  // 정착 — 당첨 처리
+    setTimeout(function(){                  // 안착 — 당첨 처리
       wheelWrap.classList.remove("nail");
       pointerEl.classList.remove("throb");
       spinHint.classList.remove("nail");
       finishWin();
-    }, DECEL + HOLD + CREEP + 150);
+    }, DUR + 200);
   }
 
   function spin(){
