@@ -130,6 +130,24 @@
   }
   .spin-hint{margin-top:16px; font-size:12.5px; color:var(--mute); font-weight:600}
   .spin-hint b{color:var(--blue)}
+  .spin-hint.nail{color:var(--danger)}
+  .spin-hint.nail b{color:var(--danger)}
+
+  /* ── 아슬아슬 near-miss 연출 (꽝 직전 감속 → 웰컴으로 창) ─── */
+  .wheel-wrap.nail::after{
+    content:""; position:absolute; inset:-12px; border-radius:50%;
+    pointer-events:none; z-index:7;
+    animation:nailGlow .5s ease-in-out infinite;
+  }
+  @keyframes nailGlow{
+    0%,100%{ box-shadow:0 0 0 2px rgba(200,50,31,.28), 0 0 18px 2px rgba(200,50,31,.16); }
+    50%    { box-shadow:0 0 0 5px rgba(200,50,31,.62), 0 0 36px 8px rgba(200,50,31,.38); }
+  }
+  .pointer.throb{ animation:ptrThrob .5s ease-in-out infinite; transform-origin:50% 0% }
+  @keyframes ptrThrob{
+    0%,100%{ transform:translateX(-50%) scale(1) }
+    50%    { transform:translateX(-50%) scale(1.22) }
+  }
 
   /* ── Buttons ─────────────────────────────── */
   .btn-primary{
@@ -514,6 +532,58 @@
 
   /* ── Spin ─────────────── */
   var spinning=false, rotation=0, attempt=0, finished=false;
+  var wheelWrap=document.querySelector(".wheel-wrap");
+  var pointerEl=document.querySelector(".pointer");
+
+  function finishWin(){
+    spinning=false; finished=true;
+    hub.innerHTML='완료';
+    showWin();
+  }
+  function finishMiss(){
+    spinning=false;
+    hub.classList.remove("disabled");
+    hub.innerHTML='RETRY<small>다시 돌리기</small>';
+    showMiss();
+  }
+
+  /* 아슬아슬 near-miss: 꽝(idx4) 바로 옆이 웰컴(idx3)인 점을 이용해
+     ① 꽝 칸에 거의 멈출 듯 감속 → ② 한 박자 멈칫 → ③ 아주 천천히 한 칸 밀려 웰컴으로 창.
+     세그먼트 각도(SEG=72): 꽝 [288~360], 웰컴 [216~288], 경계=288.
+     포인터가 가리키는 세그먼트각 = 360 - (rotation % 360). */
+  function spinNearMiss(){
+    var turns = 5;
+    var base = rotation - (rotation % 360) + turns*360;
+    var rotA = base + 68;   // 포인터를 꽝 안쪽(경계 4°)에 세움 → "꽝?!"
+    var rotB = rotA + 8;    // 경계를 넘겨 웰컴 안쪽(꽝에 딱 붙은 4°)으로 창
+    rotation = rotB;
+
+    // ① 감속하며 꽝 직전에서 아슬아슬하게 정지
+    wheel.style.transition = "transform 4s cubic-bezier(.11,.72,.14,1)";
+    wheel.style.transform = "rotate("+rotA+"deg)";
+
+    setTimeout(function(){                 // ② 멈칫 — 긴장 고조
+      hub.innerHTML='두근두근…';
+      spinHint.classList.add("nail");
+      spinHint.innerHTML='앗, <b>꽝</b>에 아슬아슬…!';
+      wheelWrap.classList.add("nail");
+      pointerEl.classList.add("throb");
+    }, 4000);
+
+    setTimeout(function(){                  // ③ 천천히 한 칸 밀려 웰컴으로
+      spinHint.innerHTML='어어… 넘어간다…!';
+      wheel.style.transition = "transform 1.3s cubic-bezier(.36,.02,.22,1)";
+      wheel.style.transform = "rotate("+rotB+"deg)";
+    }, 4000 + 750);
+
+    setTimeout(function(){                  // 정착 — 당첨 처리
+      wheelWrap.classList.remove("nail");
+      pointerEl.classList.remove("throb");
+      spinHint.classList.remove("nail");
+      finishWin();
+    }, 4000 + 750 + 1300 + 150);
+  }
+
   function spin(){
     if(isIssued()){ showAlready(); return; }
     if(!selectedDept){ openPicker(); return; }
@@ -521,23 +591,20 @@
     spinning=true; attempt++;
     hub.classList.add("disabled"); hub.innerHTML='도는 중...';
     var idx=pick(attempt);
+
+    // 꽝을 거친 뒤 웰컴 확정 스핀 → 아슬아슬 연출
+    if(idx===IDX_WELCOME && attempt>=2){ spinNearMiss(); return; }
+
     var segCenter = idx*SEG + SEG/2;
     var turns = 5;
     // 현재 각도를 상쇄해 재도전 시에도 포인터가 정확히 해당 칸에 멈추도록 보정
     var target = turns*360 + (360 - segCenter) - (rotation % 360);
     rotation += target;
+    wheel.style.transition = "transform 5s cubic-bezier(.13,.86,.18,1)";
     wheel.style.transform="rotate("+rotation+"deg)";
     setTimeout(function(){
-      spinning=false;
-      if(SEGMENTS[idx].win){
-        finished=true;
-        hub.innerHTML='완료';
-        showWin();
-      }else{
-        hub.classList.remove("disabled");
-        hub.innerHTML='RETRY<small>다시 돌리기</small>';
-        showMiss();
-      }
+      if(SEGMENTS[idx].win){ finishWin(); }
+      else{ finishMiss(); }
     }, 5100);
   }
   hub.addEventListener("click", spin);
